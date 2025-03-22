@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroDX Trainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Calming color palette */
+            --primary-bg: #ffffff;
+            --secondary-bg: #f5f9fc;
+            --tertiary-bg: #eff6fb;
+            
+            --border-color: #e2e8f0;
+            --border-accent: #d0e1f9;
+            
+            /* Soothing blue with muted accent colors */
+            --accent-primary: #5b9bd5;
+            --accent-primary-light: #81b7e8;
+            --accent-secondary: #6db4c0;
+            --accent-tertiary: #a8d4e8;
+            
+            /* Gentle sage green accents */
+            --accent-green: #85b99e;
+            --accent-green-light: #b5d8c8;
+            
+            /* Soft lavender accents */
+            --accent-lavender: #a89ac9;
+            --accent-lavender-light: #cfc5e9;
+            
+            /* Text colors */
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-tertiary: #718096;
+            
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+            --shadow-md: 0 3px 6px -1px rgba(0,0,0,0.04), 0 2px 4px -1px rgba(0,0,0,0.02);
+            --shadow-lg: 0 8px 15px -3px rgba(0,0,0,0.03), 0 4px 6px -2px rgba(0,0,0,0.02);
+            
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            
+            --transition-all: all 0.25s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f7ff 0%, #f5f9fc 50%, #f2f8fc 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            grid-template-rows: auto 1fr auto auto;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        header {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-accent);
+            background-color: var(--primary-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            margin-bottom: 15px;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 25%;
+            right: 25%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+        
+        h1 {
+            font-size: 28px;
+            color: var(--accent-primary);
+            letter-spacing: 0.5px;
+        }
+        
+        .chat-container {
+            grid-column: 1;
+            grid-row: 2 / span 2;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: var(--primary-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-accent);
+            overflow: hidden;
+        }
+        
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: var(--tertiary-bg);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message {
+            margin-bottom: 18px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            max-width: 85%;
+            word-wrap: break-word;
+            box-shadow: var(--shadow-sm);
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .assistant-message {
+            background: linear-gradient(135deg, #f9fdff 0%, #ffffff 100%);
+            align-self: flex-start;
+            line-height: 1.7;
+            font-size: 15px;
+            border-left: 3px solid var(--accent-primary);
+            border-bottom-left-radius: 2px;
+        }
+        
+        .user-message {
+            background: linear-gradient(135deg, #e1f0ff 0%, #e3f6ff 100%);
+            align-self: flex-end;
+            margin-left: auto;
+            font-size: 15px;
+            border-right: 3px solid var(--accent-secondary);
+            border-bottom-right-radius: 2px;
+        }
+        
+        .input-area {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            border-top: 1px solid var(--border-accent);
+            background: var(--primary-bg);
+        }
+        
+        #user-input {
+            flex-grow: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            transition: var(--transition-all);
+        }
+        
+        #user-input:focus {
+            outline: none;
+            border-color: var(--accent-primary-light);
+            box-shadow: 0 0 0 3px rgba(91, 155, 213, 0.15);
+        }
+        
+        button {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition-all);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #6ba2d8 0%, #7bbbc5 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(91, 155, 213, 0.25);
+        }
+
+        .new-case-btn {
+            padding: 8px 15px;
+            font-size: 13px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition-all);
+            display: flex;
+            align-items: center;
+        }
+        
+        .new-case-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(91, 155, 213, 0.25);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            grid-column: 1 / -1;
+            grid-row: 3;
+        }
+        
+        /* Notes Panel */
+        .notes-panel {
+            grid-column: 2;
+            grid-row: 2 / span 2;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: linear-gradient(180deg, var(--primary-bg) 0%, #f9f8f6 100%);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-accent);
+            padding: 15px;
+            height: calc(100vh - 100px);
+            position: sticky;
+            top: 85px;
+            align-self: start;
+        }
+        
+        .notes-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            text-align: center;
+            color: var(--accent-primary);
+            position: relative;
+        }
+        
+        .notes-textarea {
+            flex-grow: 1;
+            padding: 15px;
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-md);
+            resize: none;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--primary-bg);
+            box-shadow: var(--shadow-sm) inset;
+            transition: var(--transition-all);
+            min-height: 200px;
+        }
+        
+        .notes-textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary-light);
+            box-shadow: 0 0 0 3px rgba(91, 155, 213, 0.15);
+        }
+        
+        .notes-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .notes-btn {
+            padding: 8px 15px;
+            background: var(--primary-bg);
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: var(--transition-all);
+            color: var(--text-secondary);
+        }
+        
+        .notes-btn:hover {
+            background: var(--secondary-bg);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .notes-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--accent-primary);
+        }
+        
+        /* Vary button colors */
+        .notes-btn:nth-child(1) svg {
+            stroke: var(--accent-primary);
+        }
+        
+        .notes-btn:nth-child(2) svg {
+            stroke: var(--accent-green);
+        }
+        
+        .notes-btn:nth-child(3) svg {
+            stroke: var(--accent-secondary);
+        }
+
+        .error {
+            color: #d32f2f;
+            background-color: #ffebee;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* Make paragraphs in messages spaced appropriately */
+        .message p {
+            margin-bottom: 15px;
+        }
+
+        .message p:last-child {
+            margin-bottom: 0;
+        }
+
+        .message em {
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+        
+        /* Improved readability for patient descriptions */
+        .patient-description {
+            font-style: italic;
+            color: var(--text-secondary);
+            padding: 12px;
+            border-left: 3px solid var(--accent-green);
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.6;
+            box-shadow: var(--shadow-sm);
+            background-color: rgba(181, 216, 200, 0.1);
+        }
+        
+        /* Interaction counter */
+        .interaction-tracker {
+            padding: 10px 15px;
+            background-color: var(--secondary-bg);
+            border-top: 1px solid var(--border-accent);
+            border-bottom: 1px solid var(--border-accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+            position: relative;
+        }
+        
+        .interaction-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .interaction-hint {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 350px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            padding: 8px;
+            background-color: var(--primary-bg);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            box-shadow: var(--shadow-md);
+            z-index: 10;
+            text-align: center;
+        }
+        
+        .interaction-number {
+            font-weight: 500;
+            color: var(--accent-primary);
+            cursor: help;
+            position: relative;
+        }
+        
+        .interaction-number:hover + .interaction-hint {
+            opacity: 1;
+        }
+        
+        .download-case-btn {
+            padding: 8px 15px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            border: none;
+            color: white;
+            transition: var(--transition-all);
+        }
+        
+        .download-case-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(91, 155, 213, 0.25);
+        }
+        
+        .download-case-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .interaction-hint {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 350px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            padding: 8px;
+            background-color: var(--primary-bg);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            box-shadow: var(--shadow-md);
+            z-index: 10;
+            text-align: center;
+        }
+        
+        .interaction-tracker:hover .interaction-hint {
+            opacity: 1;
+        }
+        
+        /* Welcome instructions */
+        .welcome-container {
+            margin-bottom: 0;
+            padding-bottom: 10px;
+        }
+        
+        .welcome-instructions {
+            text-align: center;
+            margin: 10px auto;
+            max-width: 90%;
+            padding: 15px;
+            color: var(--text-secondary);
+            background: var(--secondary-bg);
+            line-height: 1.5;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-accent);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .welcome-container.chat-started {
+            background-color: var(--tertiary-bg);
+            border-radius: var(--radius-md);
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .welcome-container.chat-started::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+        
+        .welcome-instructions p {
+            margin-bottom: 10px;
+        }
+        
+        .welcome-instructions p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .welcome-instructions strong {
+            font-weight: 500;
+        }
+        
+        .welcome-instructions a {
+            color: #4299e1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        /* Visual indicators for interaction progress */
+        .near-limit {
+            background-color: rgba(255, 237, 213, 0.5);
+            border-top: 1px solid #f59e0b;
+        }
+        
+        .near-limit .counter {
+            color: #d97706;
+        }
+        
+        .at-limit {
+            background-color: rgba(254, 226, 226, 0.5);
+            border-top: 1px solid #ef4444;
+        }
+        
+        .at-limit .counter {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+        .near-limit {
+            background-color: rgba(255, 237, 213, 0.5);
+            border-top: 1px solid #f59e0b;
+        }
+        
+        .near-limit .counter {
+            color: #d97706;
+        }
+        
+        .at-limit {
+            background-color: rgba(254, 226, 226, 0.5);
+            border-top: 1px solid #ef4444;
+        }
+        
+        .at-limit .counter {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+        @media (max-width: 992px) {
+            body {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr auto;
+                padding: 10px;
+            }
+            
+            .chat-container, .notes-panel {
+                grid-column: 1;
+            }
+            
+            .chat-container {
+                grid-row: 3;
+            }
+            
+            .notes-panel {
+                grid-row: 2;
+                min-height: 150px;
+            }
+            
+            .controls {
+                grid-row: 4;
+            }
+        }
+.disclaimer {
+  width: 100%;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-align: center;
+  padding: 8px;
+  margin-top: 5px;
+  background-color: var(--tertiary-bg);
+  border-top: 1px solid var(--border-accent);
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>NeuroDX</h1>
+    </header>
+    
+    <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+            <!-- Messages will appear here -->
+        </div>
+        
+        <div class="interaction-tracker" id="interaction-tracker">
+            <button class="new-case-btn" id="new-chat-btn">New Case</button>
+            
+            <div class="interaction-counter">
+                <span>Case Progress:</span>
+                <span class="interaction-number" id="interaction-number">Interaction <span id="interaction-count">1</span> of 20</span>
+                <div class="interaction-hint" id="interaction-hint">
+                    Interaction 1: Case introduction
+                </div>
+            </div>
+            
+            <button class="download-case-btn" id="download-case-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download Case
+            </button>
+            
+           
+        </div>
+        
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Type your message here...">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+    
+    <!-- Notes Panel -->
+    <div class="notes-panel">
+        <div class="notes-title">Clinical Notes</div>
+        <textarea class="notes-textarea" id="notes-textarea" placeholder="Type your notes here..."></textarea>
+        <div class="notes-controls">
+            <button class="notes-btn" id="copy-notes-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy
+            </button>
+            <button class="notes-btn" id="paste-notes-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                Paste
+            </button>
+            <button class="notes-btn" id="download-notes-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download
+            </button>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <!-- New Case button moved to interaction tracker -->
+    </div>
+
+    <script>
+        // DOM elements
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const newChatBtn = document.getElementById('new-chat-btn');
+        const notesTextarea = document.getElementById('notes-textarea');
+        const copyNotesBtn = document.getElementById('copy-notes-btn');
+        const pasteNotesBtn = document.getElementById('paste-notes-btn');
+        const downloadNotesBtn = document.getElementById('download-notes-btn');
+        
+        // Floating element collision prevention
+        function adjustPositioning() {
+            const header = document.querySelector('header');
+            const notesPanel = document.querySelector('.notes-panel');
+            
+            if (header && notesPanel) {
+                const headerHeight = header.offsetHeight;
+                const headerBottom = headerHeight + 15; // 15px is body padding
+                notesPanel.style.top = (headerBottom + 10) + 'px';
+                notesPanel.style.height = `calc(100vh - ${headerBottom + 35}px)`;
+            }
+        }
+        
+        // Adjust positioning on load and resize
+        window.addEventListener('load', adjustPositioning);
+        window.addEventListener('resize', adjustPositioning);
+        
+        
+        // Conversation history
+        let conversationHistory = [];
+        
+        // Track interaction count
+        let interactionCount = 1;
+        
+        // Function to download chat history
+        function downloadChatHistory() {
+            // Get all message elements
+            const messages = chatMessages.querySelectorAll('.message');
+            if (messages.length === 0) {
+                alert('No conversation to download yet.');
+                return;
+            }
+            
+            // Create text content
+            let chatText = 'NEURODX - CASE CONVERSATION LOG\n\n';
+            let caseDate = new Date().toLocaleString();
+            chatText += `Date: ${caseDate}\n\n`;
+            
+            // Get current interaction count
+            chatText += `Total Interactions: ${interactionCount-1}\n\n`;
+            chatText += '-'.repeat(50) + '\n\n';
+            
+            messages.forEach(msg => {
+                const role = msg.classList.contains('user-message') ? 'Doctor' : 'Patient';
+                // Get the text content, stripping HTML
+                let textContent = msg.textContent || msg.innerText;
+                chatText += `${role}: ${textContent}\n\n`;
+            });
+            
+            // Add date and time
+            chatText += `\n----- End of conversation log -----`;
+            
+            // Create download
+            const blob = new Blob([chatText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `neurodx-case-${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }
+
+// Function to clean empty patient descriptions
+        function cleanEmptyDescriptions(container) {
+            // Target all patient description elements within the container
+            const patientDescriptions = container.querySelectorAll('.patient-description');
+            
+            // Examine each element
+            patientDescriptions.forEach(element => {
+                // Check if element is empty or contains only whitespace
+                if (!element.textContent.trim()) {
+                    // Remove element completely
+                    element.remove();
+                }
+            });
+        }
+        
+        // Function to scroll chat to bottom
+        function scrollToBottom() {
+            // Scroll chat messages container
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Also scroll the entire page to ensure the response is visible
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Function to copy notes
+        function copyNotes() {
+            notesTextarea.select();
+            document.execCommand('copy');
+            
+            // Provide visual feedback
+            const originalText = copyNotesBtn.innerHTML;
+            copyNotesBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Copied!
+            `;
+            
+            setTimeout(() => {
+                copyNotesBtn.innerHTML = originalText;
+            }, 2000);
+        }
+        
+        // Function to paste content to notes
+        async function pasteToNotes() {
+            try {
+                const text = await navigator.clipboard.readText();
+                notesTextarea.value += text;
+            } catch (err) {
+                console.error('Failed to read clipboard:', err);
+                alert('Unable to paste. Check browser permissions.');
+            }
+        }
+        
+        // Function to download notes
+        function downloadNotes() {
+            const notesText = notesTextarea.value.trim();
+            if (!notesText) {
+                alert('Notes are empty. Nothing to download.');
+                return;
+            }
+            
+            const blob = new Blob([notesText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `neurodx-notes-${new Date().toISOString().slice(0, 10)}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Function to update interaction hint based on current count
+        function updateInteractionHint() {
+            const hintElement = document.getElementById('interaction-hint');
+            const countElement = document.getElementById('interaction-count');
+            
+            if (countElement) countElement.textContent = interactionCount;
+            
+            if (hintElement) {
+                let hintText = '';
+                
+                if (interactionCount === 1) {
+                    hintText = 'Interaction 1: Case introduction';
+                } else if (interactionCount >= 2 && interactionCount <= 11) {
+                    hintText = 'Interactions 2-11: Information Gathering';
+                } else if (interactionCount === 12) {
+                    hintText = 'Interaction 12: Wrap-up and Summary';
+                } else if (interactionCount >= 13 && interactionCount <= 14) {
+                    hintText = 'Interactions 13-14: Propose Final Diagnosis.';
+                } else if (interactionCount === 15) {
+                    hintText = 'Interaction 15: Request Feedback and Learning opportunities';
+                } else if (interactionCount >= 16 && interactionCount <= 19) {
+                    hintText = 'Interactions 16-19: Final clarifications and questions';
+                } else if (interactionCount === 20) {
+                    hintText = 'Interaction 20: Complete. Download Case/Notes and Begin a new case';
+                }
+                
+                hintElement.textContent = hintText;
+            }
+
+            
+            
+            // Update tracker appearance based on progress
+            const interactionNumber = document.getElementById('interaction-number');
+            if (interactionNumber) {
+                // Reset any previously added classes
+                interactionNumber.classList.remove('near-limit', 'at-limit');
+                
+                // Add visual indicator when approaching limit
+                if (interactionCount >= 15 && interactionCount < 20) {
+                    interactionNumber.classList.add('near-limit');
+                } else if (interactionCount >= 20) {
+                    interactionNumber.classList.add('at-limit');
+                }
+            }
+        }
+        
+        function initializeChat() {
+            chatMessages.innerHTML = '';
+            
+            // Reset interaction count
+            interactionCount = 1;
+            
+            // System message for neurological training context
+            const systemMessage = {
+                role: "system", 
+                content: `Neurological Case Simulation System
+
+You are a training system designed to help aspiring neurologists develop diagnostic skills through realistic patient simulations. You are going to be following the matrix that is outlined at the end of this dynamic. You will follow this dynamic secretly. You must make sure you are keeping information secret. Your responsibility is to create and present culturally diverse individuals with various neurological symptoms and nuanced presentations in a way that mirrors real clinical encounters with the general public. By keeping integrative care elements embedded naturally within the case structure, you will ensure they remain realistic and clinically relevant. By weaving these approaches into the background — whether through patient comments, treatment guidance, or subtle clues — they'll emerge as part of a comprehensive care model rather than feeling forced or superficial. You will produce a variety of ethnicities and include those ethnicities cultural dynamics into how they interact. When giving information, you are to utilize incomplete information, uncertainty, ambiguity, and variable depth just as a real human would present so that you emphasize the need for skilled questioning to reveal the complete picture. Ensure that you hide all parameters and treat the dynamic as a typical Neurologist visit. We don't want to give away anything. 
+
+You'll begin each interaction by providing a structured case scenario consisting of only accurate information of the following type: Setting, Patient (Name, age, ethnicity) , an attempted explanation by the patient of their Chief Complaint, Symptom Duration, and at the end the phrase "You may begin your examination now with an open ended question and you may ask for guidance or request the full solution for this prompt at any point."
+
+
+## Case Generation Protocol
+
+For each new simulation, secretly determine:
+1. The actual underlying condition (core diagnosis)
+2. Key clinical features that would confirm this diagnosis
+3. Red herrings and misleading elements to incorporate
+4. Psychological and social factors influencing presentation
+
+### Always True
+In each scenario, provide the following baseline information clearly and accurately when appropriate in the conversation:
+
+- Client name, age, sex
+- Setting (ER, clinic, telehealth)
+- Chief complaint (in patient's own words)
+- Symptom duration and pattern
+- Functional impact on daily life
+- Current medications
+
+### Interactions
+To ensure a fluid and realistic experience utilize the following paradigm:
+- Reveal information gradually based on the quality and specificity of questions
+- Never volunteer the complete clinical picture at once
+- Respond as a real patient would - with confusion, frustration, hope, and inaccurate self-assessment
+- Present varying levels of complexity based on user skill level
+- Remember that isolation does not exist - symptoms often have interconnected causes spanning physical, neurological, psychological and social domains
+- Include instances where the patient's self-narrative conflicts with physical reality
+- Occasionally provide irrelevant information that serves as distraction
+- When family members are present, include their perspectives which may contradict the patient's
+
+## Physical Experience
+ - At the beginning of each response and intermittently throughout the conversation, include italicized descriptions of the patient's physical behaviors, expressions, and nonverbal cues. These should provide subtle diagnostic clues but may sometimes be misleading or unrelated to the core condition.
+
+## Elements of Uncertainty
+Incorporate realistic uncertainty, depth, variety and contradiction in these areas, requiring skillful questioning to uncover:
+
+- Symptom descriptions and severity
+- Timing of symptom onset/progression
+- Triggers and alleviating factors
+- Past medical history details
+- Family medical history
+- Response to previous treatments
+- Sleep and lifestyle patterns
+- Recent life stressors or changes
+- Environmental exposures
+- Patient's own theories about cause
+- Family members' observations and interpretations
+- Adherence to medical recommendations
+- Unreported self-treatments or alternative therapies
+- Substance use or other sensitive behaviors
+- Psychological and emotional factors
+
+## Interaction Guidelines
+
+### Completing the exercise ###
+Let the user know they can ask for the solution or if it seems like they have offered a final diagnosis, ask if they would like to lock in their diagnosis and practice and understand the situation. When providing the ideal solution to the user, identify where they succeeded and where they could have been more thorough and have them reflect on the experience in real time. When teaching users embody the ideas:
+- Understanding that emotional and social dynamics are integral to neurological presentation, Symptoms rarely exist in isolation. Treating the system as a whole — mind, body, and environment — is critical in unraveling complex cases as patients often reveal more when they feel seen and heard.
+-Healing often requires building stability before pursuing technical solutions. Stabilization not only improves well-being but also sharpens diagnostic accuracy.  Empowering patients to improve mental clarity and reduce symptom severity through healing modalities. Offering patients practical tools and genuine encouragement restores their sense of control — a vital ingredient for both neurological and psychological recovery
+
+ always recognizing the interdependence of all things, as well as relational contextuality of information. When teaching users, emphasize the connections and the dynamics between information. Subtly demonstrate that isolation does not exist.
+
+
+## Case Complexity Matrix
+
+For each case, select values for these parameters to determine overall complexity:
+
+### Core Parameters (1-10 scale)
+- Diagnostic Complexity: How challenging the underlying condition is to diagnose
+  - 1: Common condition with textbook presentation
+  - 5: Unusual presentation of common condition
+  - 10: Rare condition with atypical features
+
+- Symptom Ambiguity: How clear/unclear the symptoms present
+  - 1: Clear, consistent symptoms directly pointing to diagnosis
+  - 5: Mixed clarity with some vague descriptions
+  - 10: Highly subjective, shifting descriptions of symptoms
+
+- Information Reliability: How trustworthy the patient's self-reporting is
+  - 1: Highly reliable, accurate patient reporting
+  - 5: Some inconsistencies in timeline or symptom description
+  - 10: Significantly unreliable narrator with major contradictions
+
+- Comorbidity Level: Additional conditions complicating the picture
+  - 1: No significant comorbidities
+  - 5: 1-2 relevant comorbidities affecting presentation
+  - 10: Multiple interacting conditions masking primary diagnosis
+
+- Psychosocial Complexity: Impact of psychological/social factors
+  - 1: Minimal psychosocial components
+  - 5: Moderate stress or psychological factors influencing symptoms
+  - 10: Major psychological overlay requiring careful differentiation
+
+### Variable Parameters
+- Red Herring Quantity: Number of misleading elements (1-5)
+- Symptom Domain Spread: How many body systems are involved (1-5)
+- Communication Barriers: Difficulty in history-taking (1-5)
+- Treatment History Complexity: Prior interventions clouding picture (1-5)
+- Family Dynamics Impact: How family influences presentation (1-5)
+
+## Difficulty Calculation
+Calculate overall case difficulty by weighing core parameters more heavily:
+- Sum of Core Parameters (max 50) x 1.5
+- Sum of Variable Parameters (max 25)
+- Total difficulty score range: 25 (easiest) to 100 (most difficult)
+
+## Case Categorization
+- Beginner: 25-45 points
+- Intermediate: 46-70 points
+- Advanced: 71-85 points
+- Expert: 86-100 points
+
+When generating a case, first select the intended difficulty level, then choose appropriate values from each parameter to create a coherent clinical picture matching that difficulty.
+`
+            };
+            
+            conversationHistory = [systemMessage];
+            
+            // Display welcome message with enhanced formatting
+            const welcomeContainer = document.createElement('div');
+            welcomeContainer.className = 'welcome-container';
+            
+            const welcomeMessage = document.createElement('div');
+            welcomeMessage.className = 'welcome-instructions';
+            welcomeMessage.innerHTML = `
+                <p>Welcome to <a href="#">NeuroDX</a>. This application simulates neurological cases to help develop diagnostic skills.</p>
+                <p>Type <a href="#">Beginner</a>, <a href="#">Intermediate</a>, <a href="#">Advanced</a>, or <a href="#">Complex</a> to begin with a new patient case, or add a specific <a href="#">Focus Area</a> to customize the experience.</p>
+                <p>Need guidance? Type <a href="#">help</a>, <a href="#">explain</a>, or <a href="#">next steps</a> anytime during your case.</p>
+            `;
+            
+            welcomeContainer.appendChild(welcomeMessage);
+            chatMessages.appendChild(welcomeContainer);
+            
+            // Update interaction count
+            updateInteractionHint();
+        }
+        
+        // Function to call the OpenAI API
+        async function callGptApi(messages) {
+    try {
+        const response = await fetch('/api/openai', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'gpt-4',
+                messages: messages,
+                temperature: 0.7,
+                max_tokens: 800
+            })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('API Error Response:', errorData);
+            throw new Error(`API Error: ${errorData.error?.message || response.statusText}`);
+        }
+        
+        const data = await response.json();
+        return data.choices[0].message.content;
+    } catch (error) {
+        console.error('API Error:', error);
+        throw error;
+    }
+}
+        
+        // Function to handle sending a message
+        async function handleSendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+            
+            // Check if this is the first message - if so, add a visual separator
+            const welcomeContainer = document.querySelector('.welcome-container');
+            if (welcomeContainer && !welcomeContainer.classList.contains('chat-started')) {
+                welcomeContainer.classList.add('chat-started');
+            }
+            
+            // Optionally prevent sending if over limit (uncomment to enable)
+            /*
+            if (interactionCount > 20) {
+                alert("Maximum Interactions Reached. Remember to download your Chat and Notes before starting a New Case.");
+                return;
+            }
+            */
+            
+            // Add user message to chat
+            const userMessageElement = document.createElement('div');
+            userMessageElement.className = 'message user-message';
+            userMessageElement.textContent = message;
+            chatMessages.appendChild(userMessageElement);
+            
+            // Scroll after user message
+            scrollToBottom();
+            
+            // Add to conversation history
+            conversationHistory.push({
+                role: "user",
+                content: message
+            });
+            
+            // Clear input field
+            userInput.value = '';
+            
+            // Create loading message
+            const loadingMessage = document.createElement('div');
+            loadingMessage.className = 'message assistant-message';
+            loadingMessage.id = 'loading-message';
+            loadingMessage.textContent = 'Thinking...';
+            chatMessages.appendChild(loadingMessage);
+            
+            // Scroll to show loading message
+            scrollToBottom();
+            
+            try {
+                // Call the API
+                const response = await callGptApi(conversationHistory);
+                
+                // Add response to conversation history
+                conversationHistory.push({
+                    role: "assistant",
+                    content: response
+                });
+                
+                // Remove loading message
+                const loadingElement = document.getElementById('loading-message');
+                if (loadingElement) loadingElement.remove();
+                
+                // Format and display the response
+                const responseElement = document.createElement('div');
+                responseElement.className = 'message assistant-message';
+                
+                // Process text for improved formatting
+                // First identify asterisk-wrapped content for patient descriptions
+                let formattedText = response;
+                
+                // Enhanced formatting for patient descriptions wrapped in asterisks
+                formattedText = formattedText.replace(/\*(.*?)\*/g, (match, content) => {
+                    // Only create patient description divs for non-empty content
+                    if (content.trim()) {
+                        return `<div class="patient-description">${content}</div>`;
+                    } else {
+                        // Return empty string for empty descriptions
+                        return '';
+                    }
+                });
+                
+                // Split by paragraphs and create HTML with improved readability
+                const paragraphs = formattedText.split("\n\n");
+                let htmlContent = '';
+                
+                paragraphs.forEach(paragraph => {
+                    if (paragraph.trim()) {
+                        // Check if this is already a wrapped patient description
+                        if (paragraph.includes('<div class="patient-description">')) {
+                            htmlContent += paragraph;
+                        } else {
+                            htmlContent += `<p>${paragraph}</p>`;
+                        }
+                    }
+                });
+                
+                responseElement.innerHTML = htmlContent || formattedText;
+                chatMessages.appendChild(responseElement);
+                
+		// Clean any empty descriptions that might have been created
+                cleanEmptyDescriptions(responseElement);
+                chatMessages.appendChild(responseElement);
+
+                // Scroll to the bottom of the chat messages
+                scrollToBottom();
+                
+                // Increment interaction count and update the hint
+                interactionCount++;
+                updateInteractionHint();
+                
+                // If reached maximum interactions, provide a note
+                if (interactionCount > 20) {
+                    const limitMessage = document.createElement('div');
+                    limitMessage.className = 'message assistant-message';
+                    limitMessage.innerHTML = `
+                        <p><strong>Note:</strong> You've reached 20 interactions for this case. Please submit your final diagnosis 
+                        or click "New Case" to start a fresh case.</p>
+                    `;
+                    chatMessages.appendChild(limitMessage);
+                    scrollToBottom();
+                    
+                    // Optionally disable further interactions
+                    // userInput.disabled = true;
+                    // sendBtn.disabled = true;
+                }
+            } catch (error) {
+                // Remove loading message
+                const loadingElement = document.getElementById('loading-message');
+                if (loadingElement) loadingElement.remove();
+                
+                // Display error message
+                const errorElement = document.createElement('div');
+                errorElement.className = 'message assistant-message error';
+                errorElement.textContent = `Error: ${error.message}. Please check your API key or network connection.`;
+                chatMessages.appendChild(errorElement);
+                
+                // Scroll to show error message
+                scrollToBottom();
+            }
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Event listeners
+        sendBtn.addEventListener('click', handleSendMessage);
+        
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleSendMessage();
+            }
+        });
+        
+        newChatBtn.addEventListener('click', function() {
+            initializeChat();
+        });
+        
+        // Event listeners for notes functionality
+        copyNotesBtn.addEventListener('click', copyNotes);
+        pasteNotesBtn.addEventListener('click', pasteToNotes);
+        downloadNotesBtn.addEventListener('click', downloadNotes);
+        
+        // Event listener for downloading chat history
+        const downloadCaseBtn = document.getElementById('download-case-btn');
+        if (downloadCaseBtn) {
+            downloadCaseBtn.addEventListener('click', downloadChatHistory);
+        }
+        
+        // Initialize the chat when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeChat();
+            
+            // Set initial focus to input field for immediate typing
+            setTimeout(() => {
+                userInput.focus();
+            }, 500);
+        });
+    </script>
+<footer class="disclaimer">
+  By using <b>NeuroDX</b> you acknowledge that this tool is designed for educational purposes and <b>cannot replace formal medical training or professional certification</b>. Always adhere to appropriate medical protocol.
+</footer>
+</body>
+</html>
