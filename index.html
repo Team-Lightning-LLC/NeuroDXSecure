@@ -876,12 +876,15 @@
         }
 
       // Function to call the Chat API
+// Replace the current function with this updated version
 async function callGptApi(messages) {
     try {
-        // Extract just the conversation (without system message)
-        const userMessages = messages.filter(msg => msg.role === "user" || msg.role === "assistant");
+        // Extract conversation messages
+        const userMessages = messages.filter(msg => 
+            msg.role === "user" || msg.role === "assistant"
+        );
         
-        // Get only the last user message
+        // Get the last user message
         const lastUserMessage = messages.find(msg => msg.role === "user").content;
         
         const response = await fetch('/api/chat', {
