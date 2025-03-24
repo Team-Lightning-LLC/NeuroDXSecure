@@ -876,16 +876,16 @@
         }
 
       // Function to call the Chat API
-// Replace the current function with this updated version
+// Replace your current callGptApi function with this:
 async function callGptApi(messages) {
     try {
-        // Extract conversation messages
-        const userMessages = messages.filter(msg => 
+        // Log what we're sending for debugging
+        console.log("Sending messages:", messages);
+        
+        // Send the complete conversation history (excluding system message)
+        const conversationOnly = messages.filter(msg => 
             msg.role === "user" || msg.role === "assistant"
         );
-        
-        // Get the last user message
-        const lastUserMessage = messages.find(msg => msg.role === "user").content;
         
         const response = await fetch('/api/chat', {
             method: 'POST',
@@ -893,14 +893,14 @@ async function callGptApi(messages) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                message: lastUserMessage,
-                conversationHistory: userMessages
+                message: messages[messages.length-1].content,
+                conversationHistory: conversationOnly
             })
         });
         
+        // Handle response
         if (!response.ok) {
             const errorData = await response.json();
-            console.error('API Error Response:', errorData);
             throw new Error(`API Error: ${errorData.error?.message || response.statusText}`);
         }
         
