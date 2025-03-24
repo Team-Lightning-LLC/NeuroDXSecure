@@ -5,26 +5,8 @@ export default async function handler(req, res) {
   }
 
   try {
-     // Get user message and conversation history
-  const { message, conversationHistory } = req.body;
-  
-  // Create proper conversation array with ALL previous messages
-  let fullConversation = [systemMessage];
-  
-  // Important: Add ALL previous messages to maintain context
-  if (conversationHistory && conversationHistory.length > 0) {
-    fullConversation = fullConversation.concat(conversationHistory);
-  }
-  
-  // Add current message
-  // Don't add it again if it's already in conversationHistory
-  if (!conversationHistory.some(msg => 
-      msg.role === "user" && msg.content === message)) {
-    fullConversation.push({
-      role: "user",
-      content: message
-    });
-  }
+    // Get user message and conversation history from request
+    const { message, conversationHistory } = req.body;
     
     // Add your system message here (hidden from frontend)
     const systemMessage = {
