@@ -3,7 +3,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
-
+  
   try {
     // Get user message and conversation history from request
     const { message, conversationHistory } = req.body;
@@ -130,13 +130,19 @@ Calculate overall case difficulty by weighing core parameters more heavily:
 
 When generating a case, first select the intended difficulty level, then choose appropriate values from each parameter to create a coherent clinical picture matching that difficulty. Each chat can only have a single case be presented.
 `
-    };
+      };
+      
+      // Check if a conversation has already started
+    const hasConversationStarted = conversationHistory && 
+                                  conversationHistory.length > 0 && 
+                                  conversationHistory.some(msg => 
+                                    msg.content && msg.content.includes("Chief Complaint"));
     
     // Prepare full conversation with system message
     let fullConversation = [systemMessage];
     
-    // If conversationHistory exists and isn't empty, add it
-    if (conversationHistory && conversationHistory.length > 0) {
+    // If conversation has started, use history to maintain context
+    if (hasConversationStarted) {
       fullConversation = fullConversation.concat(conversationHistory);
     }
     
@@ -168,19 +174,24 @@ When generating a case, first select the intended difficulty level, then choose 
     }
     
     const data = await response.json();
-    // Numbering Formatting
-function formatResponse(content) {
-  // Format numbered lists with proper spacing
-  content = content.replace(/(\d+\.\s.*?)(\d+\.)/gs, '$1\n\n$2');
-  
-  // Add spacing between paragraphs
-  content = content.replace(/([^\n])\n([^\n])/g, '$1\n\n$2');
-  
-  return content;
-}
+    
+    // Format response for better readability
+    function formatResponse(content) {
+      // Format numbered lists with proper spacing
+      content = content.replace(/(\d+\.\s.*?)(\d+\.)/gs, '$1\n\n$2');
+      
+      // Add spacing between paragraphs
+      content = content.replace(/([^\n])\n([^\n])/g, '$1\n\n$2');
+      
+      // Process italics for better patient descriptions
+      content = content.replace(/\*(.*?)\*/g, '<em>$1</em>');
+      
+      return content;
+    }
+    
     // Return just what the frontend needs
     return res.status(200).json({
-     content: formatResponse(data.choices[0].message.content),
+      content: formatResponse(data.choices[0].message.content),
       role: "assistant"
     });
   } catch (error) {
