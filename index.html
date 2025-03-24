@@ -876,53 +876,33 @@
         }
         
         // Function to call the OpenAI API
-      async function callGptApi(messages) {
+        async function callGptApi(messages) {
     try {
-        // Get or create session ID
-        const sessionId = localStorage.getItem('session_id') || 'session_' + Date.now();
-        
-        // Store new session ID if needed
-        if (!localStorage.getItem('session_id')) {
-            localStorage.setItem('session_id', sessionId);
-        }
-        
-        // Extract user messages from conversation history
-        const userMessages = messages.filter(msg => msg.role === "user" || msg.role === "assistant");
-        
-        // Get the latest user message
-        const lastUserMessage = messages.find(msg => msg.role === "user").content;
-        
-        const response = await fetch('/api/chat', {
+        const response = await fetch('/api/openai', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'x-session-id': sessionId
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                message: lastUserMessage,
-                conversationHistory: userMessages
+                model: 'gpt-4',
+                messages: messages,
+                temperature: 0.7,
+                max_tokens: 800
             })
         });
-        // Error Response
-    if (!response.ok) {
-    const errorData = await response.json();
-    
-    if (errorData.error === 'limit_reached') {
-        // Disable inputs
-        userInput.disabled = true;
-        sendBtn.disabled = true;
         
-        // Show message
-        const limitMessage = document.createElement('div');
-        limitMessage.className = 'message assistant-message';
-        limitMessage.textContent = errorData.message;
-        chatMessages.appendChild(limitMessage);
-        scrollToBottom();
-        return '';
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('API Error Response:', errorData);
+            throw new Error(`API Error: ${errorData.error?.message || response.statusText}`);
+        }
+        
+        const data = await response.json();
+        return data.choices[0].message.content;
+    } catch (error) {
+        console.error('API Error:', error);
+        throw error;
     }
-    
-    console.error('API Error Response:', errorData);
-    throw new Error(`API Error: ${errorData.error?.message || response.statusText}`);
 }
         
         // Function to handle sending a message
@@ -1076,14 +1056,9 @@
                 handleSendMessage();
             }
         });
-        // NewChatBTN Session ID
-       newChatBtn.addEventListener('click', function() {
-  // Generate new session ID
-  const newSessionId = 'session_' + Date.now();
-  localStorage.setItem('session_id', newSessionId);
-  
-  initializeChat();
-});
+        
+        newChatBtn.addEventListener('click', function() {
+            initializeChat();
         });
         
         // Event listeners for notes functionality
