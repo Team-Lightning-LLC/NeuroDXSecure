@@ -1,5 +1,3 @@
-// Simple in-memory session tracking
-const sessions = {};
 // api/chat.js
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -8,29 +6,10 @@ export default async function handler(req, res) {
 
   try {
     // Get user message and conversation history from request
-const { message, conversationHistory } = req.body;
-
-// Get session ID or create one
-const sessionId = req.headers['x-session-id'] || 'default';
-
-// Initialize session if needed
-if (!sessions[sessionId]) {
-  sessions[sessionId] = { count: 0 };
-}
-
-// Increment interaction count
-sessions[sessionId].count++;
-
-// Check if limit reached
-if (sessions[sessionId].count > 20) {
-  return res.status(403).json({
-    error: 'limit_reached',
-    message: 'Maximum 20 interactions reached. Please start a new case.'
-  });
-}
-
-// Add your system message here (hidden from frontend)
-const systemMessage = {
+    const { message, conversationHistory } = req.body;
+    
+    // Add your system message here (hidden from frontend)
+    const systemMessage = {
       role: "system",
       content: `Neurological Case Simulation System
 
