@@ -168,10 +168,19 @@ When generating a case, first select the intended difficulty level, then choose 
     }
     
     const data = await response.json();
-    
+    // Numbering Formatting
+function formatResponse(content) {
+  // Format numbered lists with proper spacing
+  content = content.replace(/(\d+\.\s.*?)(\d+\.)/gs, '$1\n\n$2');
+  
+  // Add spacing between paragraphs
+  content = content.replace(/([^\n])\n([^\n])/g, '$1\n\n$2');
+  
+  return content;
+}
     // Return just what the frontend needs
     return res.status(200).json({
-      content: data.choices[0].message.content,
+     content: formatResponse(data.choices[0].message.content),
       role: "assistant"
     });
   } catch (error) {
