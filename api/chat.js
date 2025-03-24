@@ -133,10 +133,7 @@ When generating a case, first select the intended difficulty level, then choose 
       };
       
       // Check if a conversation has already started
-    const hasConversationStarted = conversationHistory && 
-                                  conversationHistory.length > 0 && 
-                                  conversationHistory.some(msg => 
-                                    msg.content && msg.content.includes("Chief Complaint"));
+    const hasConversationStarted = conversationHistory && conversationHistory.length > 0;
     
     // Prepare full conversation with system message
     let fullConversation = [systemMessage];
