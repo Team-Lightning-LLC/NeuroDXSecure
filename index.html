@@ -193,6 +193,11 @@
     100% { background-position: -100% 0; }
 }
 
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -100% 0; }
+}
+
 h1 {
     font-size: 28px;
     letter-spacing: 0.5px;
@@ -201,9 +206,9 @@ h1 {
     background: linear-gradient(
         90deg, 
         var(--accent-primary) 0%, 
-        var(--accent-primary) 40%, 
+        var(--accent-primary) 35%, 
         var(--accent-tertiary) 50%,
-        var(--accent-primary) 60%, 
+        var(--accent-primary) 65%, 
         var(--accent-primary) 100%
     );
     background-size: 200% auto;
@@ -211,6 +216,7 @@ h1 {
     background-clip: text;
     -webkit-background-clip: text;
     animation: shimmer 6s linear infinite;
+    text-shadow: 0 0 1px rgba(150, 150, 150, 0.1);
 }
         
         .chat-container {
