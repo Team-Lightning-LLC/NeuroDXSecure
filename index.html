@@ -83,10 +83,14 @@
 }
 
 :root.dark-theme .chat-container,
-:root.dark-theme .notes-panel,
+:root.dark-theme .notes-panel {
+  background-color: var(--secondary-bg);
+  border-color: var(--border-color);
+}
+
 :root.dark-theme header {
-    background-color: var(--secondary-bg);
-    border-color: var(--border-color);
+  background-color: var(--secondary-bg);
+  border-color: var(--border-color);
 }
 
 :root.dark-theme .chat-messages {
@@ -96,6 +100,9 @@
 :root.dark-theme .input-area {
     background: var(--secondary-bg);
     border-color: var(--border-color);
+}
+:root.dark-theme a {
+    color: var(--accent-lavender-light);
 }
 
 /* User and assistant messages */
