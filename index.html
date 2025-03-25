@@ -46,66 +46,67 @@
             
             --transition-all: all 0.25s ease;
         }
-	  /* Update dark theme accent colors to lavender */
+	 /* Fix for white background in dark mode */
 :root.dark-theme {
-    /* Keep existing dark background colors */
+    /* Dark mode color palette */
     --primary-bg: #121212;
     --secondary-bg: #1e1e1e;
     --tertiary-bg: #252525;
     
-    --border-color: #333330;
+    /* Other variables remain the same */
+    --border-color: #333333;
     --border-accent: #444444;
     
-    /* Change blues to lavender palette */
+    /* Lavender accent colors */
     --accent-primary: #8a7cb0;        /* Main lavender */
     --accent-primary-light: #a89ac9;  /* Light lavender */
     --accent-secondary: #9a86c4;      /* Medium lavender */
     --accent-tertiary: #7a6ca0;       /* Dark lavender */
     
-    /* Keep existing dark sage green accents */
+    /* Other colors remain the same */
     --accent-green: #5a7d68;
     --accent-green-light: #6b8f79;
-    
-    /* Enhanced lavender accents */
     --accent-lavender: #8a7cb0;
     --accent-lavender-light: #b6a4dc;
-    
-    /* Text colors remain the same */
     --text-primary: #e0e0e0;
     --text-secondary: #b0b0b0;
     --text-tertiary: #909090;
-    
-    /* Shadows remain the same */
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
     --shadow-md: 0 3px 6px -1px rgba(0,0,0,0.25), 0 2px 4px -1px rgba(0,0,0,0.15);
     --shadow-lg: 0 8px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -2px rgba(0,0,0,0.2);
 }
 
-/* Update button gradient to use lavender */
-:root.dark-theme button {
-    background: linear-gradient(135deg, var(--accent-lavender) 0%, var(--accent-secondary) 100%);
+/* Critical background fixes */
+:root.dark-theme body {
+    background: linear-gradient(135deg, #1a1a1a 0%, #222222 50%, #1e1e1e 100%);
+    color: var(--text-primary);
 }
 
-/* Update specific elements that might need direct color adjustments */
-:root.dark-theme h1,
-:root.dark-theme .notes-title {
-    color: var(--accent-lavender);
+:root.dark-theme .chat-container,
+:root.dark-theme .notes-panel,
+:root.dark-theme header {
+    background-color: var(--secondary-bg);
+    border-color: var(--border-color);
 }
 
-:root.dark-theme a {
-    color: var(--accent-lavender-light);
+:root.dark-theme .chat-messages {
+    background-color: var(--tertiary-bg);
 }
 
-:root.dark-theme .interaction-number {
-    color: var(--accent-lavender);
+:root.dark-theme .input-area {
+    background: var(--secondary-bg);
+    border-color: var(--border-color);
 }
 
-:root.dark-theme .welcome-container.chat-started::after {
-    background: linear-gradient(90deg, transparent, var(--accent-lavender), transparent);
+/* User and assistant messages */
+:root.dark-theme .user-message {
+    background: linear-gradient(135deg, #2d4a65 0%, #2d505e 100%);
+    color: var(--text-primary);
 }
 
-:root.dark-theme header::after {
-    background: linear-gradient(90deg, transparent, var(--accent-lavender), transparent);
+:root.dark-theme .assistant-message {
+    background: linear-gradient(135deg, #1e1e1e 0%, #242424 100%);
+    color: var(--text-primary);
 }
 /* Theme toggle button */
 .theme-toggle {
