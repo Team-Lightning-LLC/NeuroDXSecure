@@ -148,7 +148,14 @@ When generating a case, first select the intended difficulty level, then choose 
       role: "user",
       content: message
     });
-    
+    // Determine max tokens based on request type
+let maxTokens = 1000; // Default value
+
+// Increase token limit for full solution requests
+if (message && message.toLowerCase().includes("full solution")) {
+  maxTokens = 4000; // Significantly higher for detailed responses
+  console.log("Full solution requested - increasing token limit to 4000");
+}
     // Call OpenAI API
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
