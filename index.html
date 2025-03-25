@@ -46,12 +46,7 @@
             
             --transition-all: all 0.25s ease;
         }
-	    /* Step 1: Add Dark Mode CSS variables to your stylesheet */
-:root {
-    /* Light mode variables remain unchanged */
-    /* Your existing variables here */
-}
-
+	   /* Step 1: Dark Mode CSS variables */
 :root.dark-theme {
     /* Dark mode color palette */
     --primary-bg: #121212;
@@ -86,7 +81,7 @@
     --shadow-lg: 0 8px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -2px rgba(0,0,0,0.2);
 }
 
-/* Dark mode specific overrides */
+/* Step 2: Dark mode specific overrides */
 :root.dark-theme body {
     background: linear-gradient(135deg, #1a1a1a 0%, #222222 50%, #1e1e1e 100%);
 }
@@ -97,7 +92,9 @@
 
 :root.dark-theme .assistant-message {
     background: linear-gradient(135deg, #1e1e1e 0%, #242424 100%);
-/* Additional dark mode overrides */
+}
+
+/* Step 3: Additional element overrides */
 :root.dark-theme .notes-panel {
     background: var(--secondary-bg);
     border-color: var(--border-color);
