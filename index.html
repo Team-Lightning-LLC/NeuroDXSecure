@@ -97,6 +97,61 @@
 
 :root.dark-theme .assistant-message {
     background: linear-gradient(135deg, #1e1e1e 0%, #242424 100%);
+/* Additional dark mode overrides */
+:root.dark-theme .notes-panel {
+    background: var(--secondary-bg);
+    border-color: var(--border-color);
+}
+
+:root.dark-theme .notes-textarea {
+    background: var(--tertiary-bg);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+:root.dark-theme h1,
+:root.dark-theme .notes-title {
+    color: var(--accent-primary);
+}
+
+:root.dark-theme .welcome-instructions {
+    background: var(--secondary-bg);
+    color: var(--text-secondary);
+}
+
+:root.dark-theme .welcome-container.chat-started::after {
+    background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+}
+
+:root.dark-theme a {
+    color: var(--accent-primary-light);
+}
+
+:root.dark-theme #user-input {
+    background: var(--tertiary-bg);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+:root.dark-theme button {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+}
+
+:root.dark-theme .notes-btn {
+    background: var(--tertiary-bg);
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+}
+
+:root.dark-theme .interaction-tracker {
+    background: var(--secondary-bg);
+    border-color: var(--border-color);
+}
+
+:root.dark-theme .disclaimer {
+    background: var(--tertiary-bg);
+    color: var(--text-tertiary);
+    border-color: var(--border-color);
 }
 
 /* Theme toggle button */
