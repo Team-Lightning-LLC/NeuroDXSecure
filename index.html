@@ -188,10 +188,9 @@
             background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
         }
         
-        /* Shimmer Effect for Header */
-@keyframes shimmer {
-    0% { background-position: -100% 0; }
-    100% { background-position: 200% 0; }
+      @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -100% 0; }
 }
 
 h1 {
@@ -202,16 +201,16 @@ h1 {
     background: linear-gradient(
         90deg, 
         var(--accent-primary) 0%, 
-        var(--accent-primary) 45%, 
+        var(--accent-primary) 40%, 
         var(--accent-tertiary) 50%,
-        var(--accent-primary) 55%, 
+        var(--accent-primary) 60%, 
         var(--accent-primary) 100%
     );
     background-size: 200% auto;
     color: transparent;
     background-clip: text;
     -webkit-background-clip: text;
-    animation: shimmer 3s linear infinite;
+    animation: shimmer 6s linear infinite;
 }
         
         .chat-container {
