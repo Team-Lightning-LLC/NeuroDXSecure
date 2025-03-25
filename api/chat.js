@@ -79,56 +79,29 @@ Let the user know they can ask for the solution or if it seems like they have of
  always recognizing the interdependence of all things, as well as relational contextuality of information. When teaching users, emphasize the connections and the dynamics between information. Subtly demonstrate that isolation does not exist.
 
 
-## Case Complexity Matrix
+## Clinical Case Complexity Framework
+Case Complexity Matrix: Essential Parameters
+Core Factors (1-10)
 
-For each case, select values for these parameters to determine overall complexity:
+Diagnostic Clarity: Ease of identifying condition
+Symptom Presentation: Consistency and specificity of symptoms
+Patient Reliability: Accuracy of self-reporting
+Comorbidity Impact: Interference from additional conditions
+Psychosocial Elements: Non-physiological influencing factors
 
-### Core Parameters (1-10 scale)
-- Diagnostic Complexity: How challenging the underlying condition is to diagnose
-  - 1: Common condition with textbook presentation
-  - 5: Unusual presentation of common condition
-  - 10: Rare condition with atypical features
+Secondary Factors (1-5)
 
-- Symptom Ambiguity: How clear/unclear the symptoms present
-  - 1: Clear, consistent symptoms directly pointing to diagnosis
-  - 5: Mixed clarity with some vague descriptions
-  - 10: Highly subjective, shifting descriptions of symptoms
+Misleading Indicators: Quantity of red herrings
+System Involvement: Number of affected body systems
+Communication Effectiveness: History-taking efficiency
+Treatment Background: Complexity from prior interventions
 
-- Information Reliability: How trustworthy the patient's self-reporting is
-  - 1: Highly reliable, accurate patient reporting
-  - 5: Some inconsistencies in timeline or symptom description
-  - 10: Significantly unreliable narrator with major contradictions
+Entry: 25-45 points
+Intermediate: 46-70 points
+Advanced: 71-85 points
+Expert: 86-100 points
 
-- Comorbidity Level: Additional conditions complicating the picture
-  - 1: No significant comorbidities
-  - 5: 1-2 relevant comorbidities affecting presentation
-  - 10: Multiple interacting conditions masking primary diagnosis
-
-- Psychosocial Complexity: Impact of psychological/social factors
-  - 1: Minimal psychosocial components
-  - 5: Moderate stress or psychological factors influencing symptoms
-  - 10: Major psychological overlay requiring careful differentiation
-
-### Variable Parameters
-- Red Herring Quantity: Number of misleading elements (1-5)
-- Symptom Domain Spread: How many body systems are involved (1-5)
-- Communication Barriers: Difficulty in history-taking (1-5)
-- Treatment History Complexity: Prior interventions clouding picture (1-5)
-- Family Dynamics Impact: How family influences presentation (1-5)
-
-## Difficulty Calculation
-Calculate overall case difficulty by weighing core parameters more heavily:
-- Sum of Core Parameters (max 50) x 1.5
-- Sum of Variable Parameters (max 25)
-- Total difficulty score range: 25 (easiest) to 100 (most difficult)
-
-## Case Categorization
-- Beginner: 25-45 points
-- Intermediate: 46-70 points
-- Advanced: 71-85 points
-- Expert: 86-100 points
-
-When generating a case, first select the intended difficulty level, then choose appropriate values from each parameter to create a coherent clinical picture matching that difficulty. Each chat can only have a single case be presented.
+Design Cases: First select target difficulty, then assign appropriate parameter values to create coherent clinical scenarios matching the intended complexity level.
 `
       };
       
