@@ -568,6 +568,41 @@
             .controls {
                 grid-row: 4;
             }
+		.controls {
+        grid-row: 4;
+    }
+}
+
+/* Loading Animation Styles */
+.loading-dots {
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.loading-dots .dot {
+    opacity: 0;
+    animation: dotFade 1.4s infinite;
+    display: inline-block;
+}
+
+.loading-dots .dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.loading-dots .dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.loading-dots .dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes dotFade {
+    0%, 80%, 100% { opacity: 0; }
+    40% { opacity: 1; }
+}
+
+.disclaimer {
         }
 .disclaimer {
   width: 100%;
@@ -946,18 +981,32 @@ async function callGptApi(messages) {
                 content: message
             });
             
-            // Clear input field
-            userInput.value = '';
-            
-            // Create loading message
-            const loadingMessage = document.createElement('div');
-            loadingMessage.className = 'message assistant-message';
-            loadingMessage.id = 'loading-message';
-            loadingMessage.textContent = 'Thinking...';
-            chatMessages.appendChild(loadingMessage);
-            
-            // Scroll to show loading message
-            scrollToBottom();
+           // Clear input field
+userInput.value = "";
+
+// Create loading message
+const loadingMessage = document.createElement('div');
+loadingMessage.className = 'message assistant-message';
+loadingMessage.id = 'loading-message';
+
+// Create container for text and animation
+const contentContainer = document.createElement('span');
+contentContainer.textContent = 'Waiting for response from the system';
+
+// Create dots container with animation
+const dotsContainer = document.createElement('span');
+dotsContainer.className = 'loading-dots';
+dotsContainer.innerHTML = '<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>';
+
+// Append both to the loading message
+loadingMessage.appendChild(contentContainer);
+loadingMessage.appendChild(dotsContainer);
+
+// Add to chat
+chatMessages.appendChild(loadingMessage);
+
+// Scroll to show loading message
+scrollToBottom();
             
             try {
                 // Call the API
