@@ -188,7 +188,13 @@
             background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
         }
         
-        h1 {
+        /* Shimmer Effect for Header */
+@keyframes shimmer {
+    0% { background-position: -100% 0; }
+    100% { background-position: 200% 0; }
+}
+
+h1 {
     font-size: 28px;
     letter-spacing: 0.5px;
     position: relative;
