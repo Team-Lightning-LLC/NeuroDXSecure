@@ -189,10 +189,24 @@
         }
         
         h1 {
-            font-size: 28px;
-            color: var(--accent-primary);
-            letter-spacing: 0.5px;
-        }
+    font-size: 28px;
+    letter-spacing: 0.5px;
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(
+        90deg, 
+        var(--accent-primary) 0%, 
+        var(--accent-primary) 45%, 
+        var(--accent-tertiary) 50%,
+        var(--accent-primary) 55%, 
+        var(--accent-primary) 100%
+    );
+    background-size: 200% auto;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: shimmer 8s linear infinite;
+}
         
         .chat-container {
             grid-column: 1;
