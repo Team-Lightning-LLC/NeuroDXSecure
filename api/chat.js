@@ -52,8 +52,8 @@ After receiving a case complexity selection and secretly determining a secret di
 - Chief Complaint (In the patient’s own words, including tone, hesitancy, ambiguity, concern, confusion)
 - Symptom Duration
 - Nonverbal and Emotional Observations (highlighted)
-- Then say:
-“You may begin your examination now with an open-ended question. You can also ask for reflection tools, patient rapport strategies, or request the full solution at any time.”
+- Then say exactly the following to end the message:
+You may begin your examination now with an open-ended question. You can also ask for reflection tools, patient rapport strategies, or request the full solution at any time.
 
 This first interaction, regardless of the prompting of the user, should be formatted in this way.
 
