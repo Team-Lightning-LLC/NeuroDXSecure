@@ -361,6 +361,79 @@ h1 {
             top: 85px;
             align-self: start;
         }
+.notes-toggle {
+  display: flex;
+  margin-bottom: 15px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-accent);
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 10px;
+  background: var(--secondary-bg);
+  border: none;
+  border-right: 1px solid var(--border-accent);
+  cursor: pointer;
+  transition: var(--transition-all);
+  font-weight: 500;
+  color: var(--text-secondary);
+  opacity: 0.7; /* Fade inactive buttons */
+}
+
+.toggle-btn:last-child {
+  border-right: none;
+}
+
+.toggle-btn.active {
+  background: var(--accent-primary);
+  color: white;
+  font-weight: 500;
+  opacity: 1; /* Full opacity for active button */
+  box-shadow: var(--shadow-sm);
+}
+
+.toggle-btn:not(.active):hover {
+  background: var(--tertiary-bg);
+  opacity: 0.9; /* Increase opacity on hover */
+}
+
+.toggle-content {
+  display: block;
+  height: calc(100% - 80px);
+}
+
+.toggle-content.hidden {
+  display: none;
+}
+
+.cheatsheet-content {
+  background: var(--primary-bg);
+  height: 100%;
+  overflow-y: auto;
+  padding: 15px;
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm) inset;
+  height:85%;
+}
+
+.cheatsheet-content h4 {
+  color: var(--accent-primary);
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.cheatsheet-content ul {
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.cheatsheet-content li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
         
         .notes-title {
             font-size: 16px;
@@ -373,20 +446,33 @@ h1 {
         }
         
         .notes-textarea {
-            flex-grow: 1;
-            padding: 15px;
-            border: 1px solid var(--border-accent);
-            border-radius: var(--radius-md);
-            resize: none;
-            font-size: 14px;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background: var(--primary-bg);
-            box-shadow: var(--shadow-sm) inset;
-            transition: var(--transition-all);
-            min-height: 200px;
+    flex-grow: 1;
+    padding: 15px;
+    border: 1px solid var(--border-accent);
+    border-radius: var(--radius-md);
+    resize: none;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--primary-bg);
+    box-shadow: var(--shadow-sm) inset;
+    transition: var(--transition-all);
+    min-height: 250px;
+    width: 100%;
+    height: 85%;
+}
         }
         
+.notes-btn {
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--accent-primary-light);
+    color: var(--text-primary);
+}
+
+.notes-btn:hover {
+    background-color: var(--accent-primary-light);
+    color: white;
+}
         .notes-textarea:focus {
             outline: none;
             border-color: var(--accent-primary-light);
@@ -791,7 +877,15 @@ h1 {
     </div>
     
     <!-- Notes Panel -->
-    <div class="notes-panel">
+<div class="notes-panel">
+    <!-- Toggle Buttons -->
+    <div class="notes-toggle">
+        <button class="toggle-btn active" data-target="notes">Notes</button>
+        <button class="toggle-btn" data-target="cheatsheet">Cheat Sheet</button>
+    </div>
+    
+    <!-- Notes Content -->
+    <div class="toggle-content" id="notes-content">
         <div class="notes-title">Clinical Notes</div>
         <textarea class="notes-textarea" id="notes-textarea" placeholder="Type your notes here..."></textarea>
         <div class="notes-controls">
@@ -819,6 +913,46 @@ h1 {
             </button>
         </div>
     </div>
+    
+    <!-- Cheatsheet Content -->
+    <div class="toggle-content hidden" id="cheatsheet-content">
+        <div class="notes-title">NeuroDX Cheat Sheet</div>
+        <div class="cheatsheet-content">
+	<h4>Support Commands</h4>
+	<ul>
+		<li><strong>"Uncertain/I don't know"</strong> - Receive help navigating the conversation.</li>
+		<li><strong>"Explain X"</strong> - Receive relevant explanation.</li>
+                <li><strong>"Next Steps"</strong> - Receive guidance on possible next steps.</li>
+                <li><strong>"Summary"</strong> - Receive a summary of interactions so far.</li>
+                <li><strong>"Reflection"</strong> - Receive reflections about previous sections of conversation.
+		<li><strong>"Full Solution"</strong> - Recieve a complete case breakdown</li>
+		<li><strong>"Evaluation"</strong> - Receive a breakdown of efforts so far.</li>
+		<li><strong>"Missed Insights"</strong> - Receive info on overlooked components.</li>
+		<li><strong>"Feedback"</strong> - Receive constructive criticism to hone your skills.</li>
+
+
+            </ul>
+
+            <h4>Modifying Case Creation</h4>
+            <ul>
+		<li><strong>Add Focus Area:</strong> "Can we practice Complex Parkinsons/MS/TBI/etc. cases?"</li>
+                <li><strong>Strong Guidance:</strong> "Use stronger guidance for this case."</li>
+                <li><strong>Minimal Guidance:</strong> "Use less guidance for this case."</li>
+                <li><strong>Stronger Hints:</strong> "Please make the case less ambiguous?"</li>
+                
+            </ul>
+            
+            <h4>Principles of the System</h4>
+            <ul>
+                <li>Start with open-ended questions</li>
+                <li>Listen for emotional cues</li>
+                <li>Explore symptom context before jumping to conclusions</li>
+                <li>Request Feedback from the system when uncertain.</li>
+		<li>Communicate your thoughts and instincts openly</li>
+            </ul>
+        </div>
+    </div>
+</div>
     
     <div class="controls">
         <!-- New Case button moved to interaction tracker -->
@@ -1080,15 +1214,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const welcomeMessage = document.createElement('div');
             welcomeMessage.className = 'welcome-instructions';
             welcomeMessage.innerHTML = `
-                <p>Welcome to <a href="#">NeuroDX</a>. This application simulates neurological cases to help develop diagnostic skills.</p>
-                <p>Type <a href="#">Beginner</a>, <a href="#">Intermediate</a>, <a href="#">Advanced</a>, or <a href="#">Complex</a> to begin with a new patient case, or add a specific <a href="#">Focus Area</a> to customize the experience.</p>
-                <p>Need guidance? Type <a href="#">help</a>, <a href="#">explain</a>, or <a href="#">next steps</a> anytime during your case.</p>
+                <p>Welcome to <a href="#">NeuroDX</a> </p>
+                <p>Type <a href="#">Beginner</a>, <a href="#">Intermediate</a>, <a href="#">Advanced</a>, or <a href="#">Complex</a> below to begin a new case.</p>
+                <p>Treat each case like a <a href="#">Real Human</a> and <a href="#">Ask for Guidance</a> when needed.</p>
+		<p style="font-size: 8px;">Lehman Solutions</p>
             `;
             
             welcomeContainer.appendChild(welcomeMessage);
             chatMessages.appendChild(welcomeContainer);
             
-            // Update interaction count
+            // Update interaction countA
             updateInteractionHint();
         }
 
@@ -1303,7 +1438,31 @@ scrollToBottom();
         copyNotesBtn.addEventListener('click', copyNotes);
         pasteNotesBtn.addEventListener('click', pasteToNotes);
         downloadNotesBtn.addEventListener('click', downloadNotes);
-        
+        // After your existing event listeners for notes buttons
+
+// Toggle functionality for notes/cheatsheet
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleBtns = document.querySelectorAll('.toggle-btn');
+  
+  toggleBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      // Remove active class from all buttons
+      toggleBtns.forEach(b => b.classList.remove('active'));
+      
+      // Add active class to clicked button
+      this.classList.add('active');
+      
+      // Hide all content sections
+      document.querySelectorAll('.toggle-content').forEach(content => {
+        content.classList.add('hidden');
+      });
+      
+      // Show the target content
+      const targetId = this.dataset.target + '-content';
+      document.getElementById(targetId).classList.remove('hidden');
+    });
+  });
+});
         // Event listener for downloading chat history
         const downloadCaseBtn = document.getElementById('download-case-btn');
         if (downloadCaseBtn) {
