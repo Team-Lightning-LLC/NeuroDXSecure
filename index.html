@@ -118,11 +118,13 @@
 /* Theme toggle button */
 .theme-toggle {
     position: absolute;
-    top: 15px;
+    top: 19%;
     right: 15px;
     background: transparent;
     border: 1px solid var(--border-accent);
     border-radius: var(--radius-md);
+    width: 40px;
+    height: 40px;
     padding: 8px 12px;
     color: var(--text-secondary);
     cursor: pointer;
@@ -142,6 +144,55 @@
     width: 16px;
     height: 16px;
     stroke: var(--accent-primary);
+}
+
+.home-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    color: var(--accent-primary);
+    background: var(--primary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    transition: var(--transition-all);
+    z-index: 101;
+
+    transition: var(--transition-all);
+    box-shadow: var(--shadow-sm);
+}
+
+.home-button:hover {
+    background: var(--secondary-bg);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.home-button svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--accent-primary);
+}
+.home-button {
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.home-button:hover {
+  box-shadow: 0 3px 3px rgba(91, 155, 213, 0.2);
+}
+
+:root.dark-theme .home-button {
+  background: rgba(30, 30, 30, 0.9);
 }
         
         * {
@@ -826,6 +877,12 @@ h1 {
 </head>
 <body>
    <header>
+ 	<a href="https://neuro-dx-secure.vercel.app/" class="home-button" title="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+    </a>
     <h1>NeuroDX</h1>
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-light">
@@ -921,11 +978,11 @@ h1 {
 	<h4>Support Commands</h4>
 	<ul>
 		<li><strong>"Uncertain/I don't know"</strong> - Receive help navigating the conversation.</li>
-		<li><strong>"Explain 'X'"</strong> - Receive relevant explanation.</li>
+		<li><strong>"Explain X"</strong> - Receive relevant explanation.</li>
                 <li><strong>"Next Steps"</strong> - Receive guidance on possible next steps.</li>
                 <li><strong>"Summary"</strong> - Receive a summary of interactions so far.</li>
                 <li><strong>"Reflection"</strong> - Receive reflections about previous sections of conversation.
-		<li><strong>"Full Solution"</strong> - Recieve a complete case breakdown.</li>
+		<li><strong>"Full Solution"</strong> - Recieve a complete case breakdown</li>
 		<li><strong>"Evaluation"</strong> - Receive a breakdown of efforts so far.</li>
 		<li><strong>"Missed Insights"</strong> - Receive info on overlooked components.</li>
 		<li><strong>"Feedback"</strong> - Receive constructive criticism to hone your skills.</li>
@@ -938,17 +995,17 @@ h1 {
 		<li><strong>Add Focus Area:</strong> "Can we practice Complex Parkinsons/MS/TBI/etc. cases?"</li>
                 <li><strong>Strong Guidance:</strong> "Use stronger guidance for this case."</li>
                 <li><strong>Minimal Guidance:</strong> "Use less guidance for this case."</li>
-                <li><strong>Stronger Hints:</strong> "Please make the case less ambiguous."</li>
+                <li><strong>Stronger Hints:</strong> "Please make the case less ambiguous?"</li>
                 
             </ul>
             
             <h4>Principles of the System</h4>
             <ul>
-                <li>Start with open-ended questions.</li>
-                <li>Listen for emotional cues.</li>
-                <li>Explore symptom context before jumping to conclusions.</li>
+                <li>Start with open-ended questions</li>
+                <li>Listen for emotional cues</li>
+                <li>Explore symptom context before jumping to conclusions</li>
                 <li>Request Feedback from the system when uncertain.</li>
-		<li>Communicate your thoughts and instincts openly.</li>
+		<li>Communicate your thoughts and instincts openly</li>
             </ul>
         </div>
     </div>
@@ -1308,7 +1365,7 @@ loadingMessage.id = 'loading-message';
 
 // Create container for text and animation
 const contentContainer = document.createElement('span');
-contentContainer.textContent = 'Content Loading';
+contentContainer.textContent = 'Content Loading, Please Wait';
 
 // Create dots container with animation
 const dotsContainer = document.createElement('span');
