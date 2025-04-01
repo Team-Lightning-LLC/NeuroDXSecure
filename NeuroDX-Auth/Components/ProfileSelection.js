@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-export default function ProfileSelection({ onComplete }) {
-  const [profiles, setProfiles] = useState([]);
+export default function UserProfile() {
+  const [profile, setProfile] = useState({
+    name: '',
+    role: 'student',
+    specialty: ''
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isNewUser, setIsNewUser] = useState(true);
   const router = useRouter();
 
-  // Fetch user profiles on component mount
+  // Check for existing profile
   useEffect(() => {
-    async function fetchProfiles() {
+    async function fetchProfile() {
       try {
         const token = localStorage.getItem('authToken');
         
@@ -18,11 +23,18 @@ export default function ProfileSelection({ onComplete }) {
           return;
         }
         
-        const response = await fetch('/api/auth/profiles', {
+        const response = await fetch('/api/auth/profile', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
+        
+        if (response.status === 404) {
+          // No profile exists yet
+          setIsNewUser(true);
+          setLoading(false);
+          return;
+        }
         
         const data = await response.json();
         
@@ -30,70 +42,114 @@ export default function ProfileSelection({ onComplete }) {
           throw new Error(data.message);
         }
         
-        setProfiles(data.profiles);
+        // Profile exists
+        setProfile(data.profile);
+        setIsNewUser(false);
       } catch (err) {
-        setError('Failed to load profiles');
+        setError('Failed to load profile');
       } finally {
         setLoading(false);
       }
     }
     
-    fetchProfiles();
+    fetchProfile();
   }, [router]);
 
-  // Select profile and continue
-  function handleProfileSelect(profileId) {
-    localStorage.setItem('activeProfile', profileId);
+  function handleChange(e) {
+    setProfile({
+      ...profile,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
     
-    // Redirect to dashboard or call completion handler
-    if (onComplete) {
-      onComplete(profileId);
-    } else {
+    try {
+      const token = localStorage.getItem('authToken');
+      const method = isNewUser ? 'POST' : 'PUT';
+      
+      const response = await fetch('/api/auth/profile', {
+        method,
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(profile)
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      
+      // Proceed to dashboard
       router.push('/dashboard');
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
     }
   }
 
-  // Create new profile
-  function handleCreateProfile() {
-    router.push('/auth/create-profile');
-  }
-
-  if (loading) return <div className="profile-loading">Loading profiles...</div>;
+  if (loading) return <div className="profile-loading">Loading...</div>;
 
   return (
-    <div className="profile-selection">
-      <h2>Select Profile</h2>
+    <div className="profile-form">
+      <h2>{isNewUser ? 'Complete Your Profile' : 'Your Profile'}</h2>
       
       {error && <div className="error-message">{error}</div>}
       
-      <div className="profiles-container">
-        {profiles.length > 0 ? (
-          profiles.map(profile => (
-            <div 
-              key={profile.id} 
-              className="profile-card"
-              onClick={() => handleProfileSelect(profile.id)}
-            >
-              <div className="profile-icon">{profile.name.charAt(0)}</div>
-              <div className="profile-info">
-                <h3>{profile.name}</h3>
-                <p>{profile.role}</p>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="no-profiles">
-            <p>No profiles found. Create your first profile to continue.</p>
-          </div>
-        )}
-        
-        <div className="profile-card new-profile" onClick={handleCreateProfile}>
-          <div className="profile-icon">+</div>
-          <div className="profile-info">
-            <h3>Create New Profile</h3>
-          </div>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={profile.name}
+            onChange={handleChange}
+            required
+          />
         </div>
-      </div>
+        
+        <div className="form-group">
+          <label htmlFor="role">Role</label>
+          <select
+            id="role"
+            name="role"
+            value={profile.role}
+            onChange={handleChange}
+            required
+          >
+            <option value="student">Medical Student</option>
+            <option value="resident">Resident</option>
+            <option value="physician">Physician</option>
+            <option value="educator">Educator</option>
+          </select>
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="specialty">Specialty/Interest</label>
+          <input
+            type="text"
+            id="specialty"
+            name="specialty"
+            value={profile.specialty}
+            onChange={handleChange}
+            placeholder="Optional"
+          />
+        </div>
+        
+        <button 
+          type="submit" 
+          disabled={loading}
+          className="profile-btn"
+        >
+          {loading ? 'Saving...' : (isNewUser ? 'Create Profile' : 'Update Profile')}
+        </button>
+      </form>
     </div>
   );
 }
