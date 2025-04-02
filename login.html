@@ -103,32 +103,29 @@
         </form>
     </div>
 
-    <script src="auth.js"></script>
-    <script>
+   <script src="auth.js"></script>
+<script>
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const email = this.querySelector('input[type="email"]').value;
             const password = this.querySelector('input[type="password"]').value;
-            const remember = this.querySelector('input[type="checkbox"]').checked;
+            
+            // Debug output
+            console.log("Login attempt:", email);
             
             const result = auth.login(email, password);
+            console.log("Login result:", result);
             
             if (result.success) {
-                // If remember me is checked, set longer expiration
-                if (remember) {
-                    // In a real app, you'd use secure cookies with expiration
-                    localStorage.setItem('rememberMe', 'true');
-                }
-                
                 window.location.href = 'index.html';
             } else {
-                // Show error message
-                const errorEl = document.getElementById('error');
-                errorEl.textContent = result.message;
-                errorEl.style.display = 'block';
+                alert(result.message || "Login failed");
             }
         });
-    </script>
+    });
+</script>
 </body>
 </html>
