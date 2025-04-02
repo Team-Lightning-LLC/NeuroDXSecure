@@ -6,32 +6,25 @@
     <title>NeuroDX - Login</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, system-ui, sans-serif;
             display: flex;
             justify-content: center;
             padding-top: 100px;
             background-color: #f5f7fa;
         }
-        .auth-container {
-            width: 360px;
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 25px;
-        }
+        .auth-container {width: 360px;}
+        .tabs {display: flex; margin-bottom: 25px;}
         .tab {
             padding: 10px 20px;
-            cursor: pointer;
             font-weight: 500;
-            color: #333;
             text-decoration: none;
+            color: #333;
         }
         .tab.active {
             color: #0088ff;
             border-bottom: 2px solid #0088ff;
         }
-        input[type="email"],
-        input[type="password"] {
+        input {
             width: 100%;
             padding: 15px;
             margin-bottom: 15px;
@@ -41,14 +34,10 @@
             box-sizing: border-box;
             font-size: 15px;
         }
-        input[type="checkbox"] {
-            margin-right: 8px;
-        }
         .remember-me {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
-            font-size: 14px;
         }
         .btn {
             background-color: #0088ff;
@@ -60,21 +49,13 @@
             font-size: 15px;
             cursor: pointer;
         }
-        .forgot {
-            color: #333;
-            margin-left: 15px;
-            font-size: 14px;
-            text-decoration: none;
-        }
         .actions {
             display: flex;
             align-items: center;
         }
-        .error-message {
-            color: #e53935;
-            margin-bottom: 15px;
-            font-size: 14px;
-            display: none;
+        .forgot {
+            margin-left: 15px;
+            color: #333;
         }
     </style>
 </head>
@@ -85,14 +66,12 @@
             <a href="register.html" class="tab">Register</a>
         </div>
         
-        <div id="error" class="error-message"></div>
-        
         <form id="login-form">
             <input type="email" placeholder="Please enter your email" required>
             <input type="password" placeholder="Please enter your password" required>
             
             <div class="remember-me">
-                <input type="checkbox" id="remember" name="remember">
+                <input type="checkbox" id="remember" style="width:auto; margin-right:8px;">
                 <label for="remember">Remember Me</label>
             </div>
             
@@ -103,29 +82,34 @@
         </form>
     </div>
 
-   <script src="auth.js"></script>
-<script>
-    // Wait for DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
+    <script>
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const email = this.querySelector('input[type="email"]').value;
             const password = this.querySelector('input[type="password"]').value;
             
-            // Debug output
-            console.log("Login attempt:", email);
+            // Get users from localStorage
+            const usersData = localStorage.getItem('users');
+            if (!usersData) {
+                alert('No users registered');
+                return;
+            }
             
-            const result = auth.login(email, password);
-            console.log("Login result:", result);
+            // Find matching user
+            const users = JSON.parse(usersData);
+            const user = users.find(u => u.email === email && u.password === password);
             
-            if (result.success) {
+            if (user) {
+                // Set auth token
+                localStorage.setItem('authToken', 'logged-in');
+                
+                // Redirect to main app
                 window.location.href = 'index.html';
             } else {
-                alert(result.message || "Login failed");
+                alert('Invalid email or password');
             }
         });
-    });
-</script>
+    </script>
 </body>
 </html>
