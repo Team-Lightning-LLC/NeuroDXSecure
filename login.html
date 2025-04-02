@@ -70,6 +70,12 @@
             display: flex;
             align-items: center;
         }
+        .error-message {
+            color: #e53935;
+            margin-bottom: 15px;
+            font-size: 14px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -78,7 +84,9 @@
             <a href="login.html" class="tab active">Login</a>
             <a href="register.html" class="tab">Register</a>
         </div>
-
+        
+        <div id="error" class="error-message"></div>
+        
         <form id="login-form">
             <input type="email" placeholder="Please enter your email" required>
             <input type="password" placeholder="Please enter your password" required>
@@ -95,6 +103,7 @@
         </form>
     </div>
 
+    <script src="auth.js"></script>
     <script>
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -103,11 +112,22 @@
             const password = this.querySelector('input[type="password"]').value;
             const remember = this.querySelector('input[type="checkbox"]').checked;
             
-            // Store authentication token
-            localStorage.setItem('authToken', 'sample-token-value');
+            const result = auth.login(email, password);
             
-            // Redirect to main app
-            window.location.href = 'index.html';
+            if (result.success) {
+                // If remember me is checked, set longer expiration
+                if (remember) {
+                    // In a real app, you'd use secure cookies with expiration
+                    localStorage.setItem('rememberMe', 'true');
+                }
+                
+                window.location.href = 'index.html';
+            } else {
+                // Show error message
+                const errorEl = document.getElementById('error');
+                errorEl.textContent = result.message;
+                errorEl.style.display = 'block';
+            }
         });
     </script>
 </body>
