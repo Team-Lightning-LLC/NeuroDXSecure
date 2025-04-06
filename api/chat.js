@@ -134,7 +134,7 @@ if (message && message.toLowerCase().includes("full solution")) {
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'gpt-4o',
         messages: fullConversation,
         temperature: 0.7,
         max_tokens: 800
