@@ -3,1542 +3,1874 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroDX Trainer</title>
+    <title>NeuroDX - Advanced Neurological Training Platform</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Calming color palette */
-            --primary-bg: #ffffff;
-            --secondary-bg: #f5f9fc;
-            --tertiary-bg: #eff6fb;
+            /* Modern, medical-inspired color system */
+            --bg-primary: #fafbfc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f6f8fa;
+            --bg-accent: #f0f4f8;
             
-            --border-color: #e2e8f0;
-            --border-accent: #d0e1f9;
+            /* Medical blues with depth */
+            --medical-blue: #0969da;
+            --medical-blue-light: #218bff;
+            --medical-blue-dark: #0550ae;
+            --medical-accent: #54aeff;
             
-            /* Soothing blue with muted accent colors */
-            --accent-primary: #5b9bd5;
-            --accent-primary-light: #81b7e8;
-            --accent-secondary: #6db4c0;
-            --accent-tertiary: #a8d4e8;
+            /* Semantic colors */
+            --success: #1a7f37;
+            --warning: #9a6700;
+            --danger: #cf222e;
+            --info: #0969da;
             
-            /* Gentle sage green accents */
-            --accent-green: #85b99e;
-            --accent-green-light: #b5d8c8;
+            /* Neutral grays */
+            --gray-900: #1b1f23;
+            --gray-800: #32383f;
+            --gray-700: #444d56;
+            --gray-600: #586069;
+            --gray-500: #6a737d;
+            --gray-400: #959da5;
+            --gray-300: #d1d5da;
+            --gray-200: #e1e4e8;
+            --gray-100: #f6f8fa;
             
-            /* Soft lavender accents */
-            --accent-lavender: #a89ac9;
-            --accent-lavender-light: #cfc5e9;
+            /* Shadows with medical precision */
+            --shadow-xs: 0 1px 2px rgba(27, 31, 35, 0.04);
+            --shadow-sm: 0 1px 3px rgba(27, 31, 35, 0.06), 0 1px 2px rgba(27, 31, 35, 0.03);
+            --shadow-md: 0 4px 6px rgba(27, 31, 35, 0.06), 0 2px 4px rgba(27, 31, 35, 0.03);
+            --shadow-lg: 0 10px 15px rgba(27, 31, 35, 0.08), 0 4px 6px rgba(27, 31, 35, 0.04);
+            --shadow-xl: 0 20px 25px rgba(27, 31, 35, 0.08), 0 10px 10px rgba(27, 31, 35, 0.04);
             
-            /* Text colors */
-            --text-primary: #2d3748;
-            --text-secondary: #4a5568;
-            --text-tertiary: #718096;
+            /* Smooth transitions */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
             
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
-            --shadow-md: 0 3px 6px -1px rgba(0,0,0,0.04), 0 2px 4px -1px rgba(0,0,0,0.02);
-            --shadow-lg: 0 8px 15px -3px rgba(0,0,0,0.03), 0 4px 6px -2px rgba(0,0,0,0.02);
-            
+            /* Border radius system */
             --radius-sm: 6px;
-            --radius-md: 10px;
-            --radius-lg: 16px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
             
-            --transition-all: all 0.25s ease;
+            /* Z-index layers */
+            --z-base: 0;
+            --z-dropdown: 100;
+            --z-sticky: 200;
+            --z-overlay: 300;
+            --z-modal: 400;
+            --z-tooltip: 500;
         }
-	 /* Fix for white background in dark mode */
-:root.dark-theme {
-    /* Dark mode color palette */
-    --primary-bg: #121212;
-    --secondary-bg: #1e1e1e;
-    --tertiary-bg: #252525;
-    
-    /* Other variables remain the same */
-    --border-color: #333333;
-    --border-accent: #444444;
-    
-    /* Lavender accent colors */
-    --accent-primary: #8a7cb0;        /* Main lavender */
-    --accent-primary-light: #a89ac9;  /* Light lavender */
-    --accent-secondary: #9a86c4;      /* Medium lavender */
-    --accent-tertiary: #7a6ca0;       /* Dark lavender */
-    
-    /* Other colors remain the same */
-    --accent-green: #5a7d68;
-    --accent-green-light: #6b8f79;
-    --accent-lavender: #8a7cb0;
-    --accent-lavender-light: #b6a4dc;
-    --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
-    --text-tertiary: #909090;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
-    --shadow-md: 0 3px 6px -1px rgba(0,0,0,0.25), 0 2px 4px -1px rgba(0,0,0,0.15);
-    --shadow-lg: 0 8px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -2px rgba(0,0,0,0.2);
-}
 
-/* Critical background fixes */
-:root.dark-theme body {
-    background: linear-gradient(135deg, #1a1a1a 0%, #222222 50%, #1e1e1e 100%);
-    color: var(--text-primary);
-}
+        /* Dark theme with medical precision */
+        [data-theme="dark"] {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2128;
+            --bg-accent: #262c36;
+            
+            --medical-blue: #58a6ff;
+            --medical-blue-light: #79c0ff;
+            --medical-blue-dark: #388bfd;
+            --medical-accent: #79c0ff;
+            
+            --success: #3fb950;
+            --warning: #d29922;
+            --danger: #f85149;
+            --info: #58a6ff;
+            
+            --gray-900: #f0f6fc;
+            --gray-800: #c9d1d9;
+            --gray-700: #b1bac4;
+            --gray-600: #8b949e;
+            --gray-500: #6e7681;
+            --gray-400: #484f58;
+            --gray-300: #30363d;
+            --gray-200: #21262d;
+            --gray-100: #161b22;
+        }
 
-:root.dark-theme .chat-container,
-:root.dark-theme .notes-panel {
-    background: var(--secondary-bg) !important;
-    background-image: none !important;
-}
-
-:root.dark-theme header {
-  background-color: var(--secondary-bg);
-  border-color: var(--border-color);
-}
-
-:root.dark-theme .chat-messages {
-    background-color: var(--tertiary-bg);
-}
-
-:root.dark-theme .input-area {
-    background: var(--secondary-bg);
-    border-color: var(--border-color);
-}
-:root.dark-theme a {
-    color: var(--accent-lavender-light);
-}
-
-/* User and assistant messages */
-:root.dark-theme .user-message {
-    background: linear-gradient(135deg, #2d4a65 0%, #2d505e 100%);
-    color: var(--text-primary);
-}
-
-:root.dark-theme .assistant-message {
-    background: linear-gradient(135deg, #1e1e1e 0%, #242424 100%);
-    color: var(--text-primary);
-}
-/* Theme toggle button */
-.theme-toggle {
-    position: absolute;
-    top: 19%;
-    right: 15px;
-    background: transparent;
-    border: 1px solid var(--border-accent);
-    border-radius: var(--radius-md);
-    width: 40px;
-    height: 40px;
-    padding: 8px 12px;
-    color: var(--text-secondary);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 13px;
-    transition: var(--transition-all);
-    z-index: 101;
-}
-
-.theme-toggle:hover {
-    background: var(--secondary-bg);
-}
-
-.theme-toggle svg {
-    width: 16px;
-    height: 16px;
-    stroke: var(--accent-primary);
-}
-
-.home-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    color: var(--accent-primary);
-    background: var(--primary-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    align-items: center;
-    gap: 5px;
-    font-size: 13px;
-    transition: var(--transition-all);
-    z-index: 101;
-
-    transition: var(--transition-all);
-    box-shadow: var(--shadow-sm);
-}
-
-.home-button:hover {
-    background: var(--secondary-bg);
-    transform: translateY(-50%) scale(1.05);
-}
-
-.home-button svg {
-    width: 18px;
-    height: 18px;
-    stroke: var(--accent-primary);
-}
-.home-button {
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.home-button:hover {
-  box-shadow: 0 3px 3px rgba(91, 155, 213, 0.2);
-}
-
-:root.dark-theme .home-button {
-  background: rgba(30, 30, 30, 0.9);
-}
-        
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #f0f7ff 0%, #f5f9fc 50%, #f2f8fc 100%);
-            color: var(--text-primary);
-            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--gray-900);
+            line-height: 1.6;
+            font-size: 14px;
+            overflow: hidden;
+            transition: background-color var(--transition-base);
+        }
+
+        /* Modern layout grid */
+        .app-container {
             display: grid;
-            grid-template-columns: 1fr 320px;
-            grid-template-rows: auto 1fr auto auto;
-            gap: 15px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px;
+            grid-template-columns: 280px 1fr 320px;
+            grid-template-rows: 60px 1fr;
+            height: 100vh;
+            background-color: var(--bg-primary);
         }
-        
-        header {
+
+        /* Header with blur effect */
+        .header {
             grid-column: 1 / -1;
-            text-align: center;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border-accent);
-            background-color: var(--primary-bg);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            position: sticky;
-            top: 15px;
-            z-index: 100;
-            margin-bottom: 15px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: relative;
+            z-index: var(--z-sticky);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
-        
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 25%;
-            right: 25%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
         }
-        
-      @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -100% 0; }
-}
 
-@keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -100% 0; }
-}
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+            text-decoration: none;
+            transition: opacity var(--transition-fast);
+        }
 
-h1 {
-    font-size: 28px;
-    letter-spacing: 0.5px;
-    position: relative;
-    display: inline-block;
-    background: linear-gradient(
-        90deg, 
-        var(--accent-primary) 0%, 
-        var(--accent-primary) 35%, 
-        var(--accent-tertiary) 50%,
-        var(--accent-primary) 65%, 
-        var(--accent-primary) 100%
-    );
-    background-size: 200% auto;
-    color: transparent;
-    background-clip: text;
-    -webkit-background-clip: text;
-    animation: shimmer 6s linear infinite;
-    text-shadow: 0 0 1px rgba(150, 150, 150, 0.1);
-}
-        
-        .chat-container {
-            grid-column: 1;
-            grid-row: 2 / span 2;
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--medical-blue), var(--medical-accent));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Sidebar navigation */
+        .sidebar {
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--gray-200);
+            padding: 24px 16px;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            height: 100%;
-            background-color: var(--primary-bg);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-accent);
+            gap: 24px;
+        }
+
+        .case-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .case-selector-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0 8px;
+            margin-bottom: 4px;
+        }
+
+        .case-level-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-800);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-align: left;
+            position: relative;
             overflow: hidden;
         }
-        
-        .chat-messages {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-            background-color: var(--tertiary-bg);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .message {
-            margin-bottom: 18px;
-            padding: 12px 16px;
-            border-radius: var(--radius-md);
-            max-width: 85%;
-            word-wrap: break-word;
-            box-shadow: var(--shadow-sm);
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .assistant-message {
-            background: linear-gradient(135deg, #f9fdff 0%, #ffffff 100%);
-            align-self: flex-start;
-            line-height: 1.7;
-            font-size: 15px;
-            border-left: 3px solid var(--accent-primary);
-            border-bottom-left-radius: 2px;
-        }
-        
-        .user-message {
-            background: linear-gradient(135deg, #e1f0ff 0%, #e3f6ff 100%);
-            align-self: flex-end;
-            margin-left: auto;
-            font-size: 15px;
-            border-right: 3px solid var(--accent-secondary);
-            border-bottom-right-radius: 2px;
-        }
-        
-        .input-area {
-            display: flex;
-            gap: 10px;
-            padding: 15px;
-            border-top: 1px solid var(--border-accent);
-            background: var(--primary-bg);
-        }
-        
-        #user-input {
-            flex-grow: 1;
-            padding: 12px 16px;
-            border: 1px solid var(--border-accent);
-            border-radius: var(--radius-md);
-            font-size: 15px;
-            background: var(--primary-bg);
-            color: var(--text-primary);
-            transition: var(--transition-all);
-        }
-        
-        #user-input:focus {
-            outline: none;
-            border-color: var(--accent-primary-light);
-            box-shadow: 0 0 0 3px rgba(91, 155, 213, 0.15);
-        }
-        
-        button {
-            padding: 10px 16px;
-            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-            color: white;
-            border: none;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition-all);
-            box-shadow: var(--shadow-sm);
-        }
-        
-        button:hover {
-            background: linear-gradient(135deg, #6ba2d8 0%, #7bbbc5 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(91, 155, 213, 0.25);
+
+        .case-level-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--medical-blue);
+            transform: translateX(-100%);
+            transition: transform var(--transition-fast);
         }
 
-        .new-case-btn {
-            padding: 8px 15px;
-            font-size: 13px;
-            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-            color: white;
-            border: none;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition-all);
+        .case-level-btn:hover {
+            background: var(--bg-accent);
+            color: var(--gray-900);
+        }
+
+        .case-level-btn.active {
+            background: var(--bg-accent);
+            color: var(--medical-blue);
+            border-color: var(--gray-200);
+        }
+
+        .case-level-btn.active::before {
+            transform: translateX(0);
+        }
+
+        .case-level-description {
+            font-size: 12px;
+            color: var(--gray-600);
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        /* Main chat area */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-tertiary);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 16px 24px;
             display: flex;
             align-items: center;
-        }
-        
-        .new-case-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(91, 155, 213, 0.25);
-        }
-        
-        .controls {
-            display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            grid-column: 1 / -1;
-            grid-row: 3;
+            min-height: 60px;
         }
-        
-        /* Notes Panel */
-        .notes-panel {
-            grid-column: 2;
-            grid-row: 2 / span 2;
+
+        .case-info {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            background: linear-gradient(180deg, var(--primary-bg) 0%, #f9f8f6 100%);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-accent);
-            padding: 15px;
-            height: calc(100vh - 100px);
-            position: sticky;
-            top: 85px;
-            align-self: start;
+            gap: 4px;
         }
-.notes-toggle {
-  display: flex;
-  margin-bottom: 15px;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  border: 1px solid var(--border-accent);
-}
 
-.toggle-btn {
-  flex: 1;
-  padding: 10px;
-  background: var(--secondary-bg);
-  border: none;
-  border-right: 1px solid var(--border-accent);
-  cursor: pointer;
-  transition: var(--transition-all);
-  font-weight: 500;
-  color: var(--text-secondary);
-  opacity: 0.7; /* Fade inactive buttons */
-}
-
-.toggle-btn:last-child {
-  border-right: none;
-}
-
-.toggle-btn.active {
-  background: var(--accent-primary);
-  color: white;
-  font-weight: 500;
-  opacity: 1; /* Full opacity for active button */
-  box-shadow: var(--shadow-sm);
-}
-
-.toggle-btn:not(.active):hover {
-  background: var(--tertiary-bg);
-  opacity: 0.9; /* Increase opacity on hover */
-}
-
-.toggle-content {
-  display: block;
-  height: calc(100% - 80px);
-}
-
-.toggle-content.hidden {
-  display: none;
-}
-
-.cheatsheet-content {
-  background: var(--primary-bg);
-  height: 100%;
-  overflow-y: auto;
-  padding: 15px;
-  border: 1px solid var(--border-accent);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm) inset;
-  height:85%;
-}
-
-.cheatsheet-content h4 {
-  color: var(--accent-primary);
-  margin-top: 15px;
-  margin-bottom: 10px;
-}
-
-.cheatsheet-content ul {
-  padding-left: 20px;
-  margin-bottom: 15px;
-}
-
-.cheatsheet-content li {
-  margin-bottom: 8px;
-  line-height: 1.5;
-}
-        
-        .notes-title {
+        .case-title {
             font-size: 16px;
             font-weight: 600;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            text-align: center;
-            color: var(--accent-primary);
-            position: relative;
+            color: var(--gray-900);
         }
-        
-        .notes-textarea {
-    flex-grow: 1;
-    padding: 15px;
-    border: 1px solid var(--border-accent);
-    border-radius: var(--radius-md);
-    resize: none;
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text-primary);
-    background: var(--primary-bg);
-    box-shadow: var(--shadow-sm) inset;
-    transition: var(--transition-all);
-    min-height: 250px;
-    width: 100%;
-    height: 85%;
-}
-        }
-        
-.notes-btn {
-    background-color: var(--secondary-bg);
-    border: 1px solid var(--accent-primary-light);
-    color: var(--text-primary);
-}
 
-.notes-btn:hover {
-    background-color: var(--accent-primary-light);
-    color: white;
-}
-        .notes-textarea:focus {
-            outline: none;
-            border-color: var(--accent-primary-light);
-            box-shadow: 0 0 0 3px rgba(91, 155, 213, 0.15);
-        }
-        
-        .notes-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .notes-btn {
-            padding: 8px 15px;
-            background: var(--primary-bg);
-            border: 1px solid var(--border-accent);
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 13px;
+        .case-status {
             display: flex;
             align-items: center;
-            gap: 5px;
-            transition: var(--transition-all);
-            color: var(--text-secondary);
+            gap: 16px;
+            font-size: 13px;
+            color: var(--gray-600);
         }
-        
-        .notes-btn:hover {
-            background: var(--secondary-bg);
-            transform: translateY(-2px);
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Chat messages area */
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            animation: fadeIn var(--transition-base) ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+        }
+
+        .user-avatar {
+            background: linear-gradient(135deg, var(--medical-blue), var(--medical-blue-dark));
+        }
+
+        .assistant-avatar {
+            background: linear-gradient(135deg, var(--gray-600), var(--gray-700));
+        }
+
+        .message-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .message-author {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .message-time {
+            color: var(--gray-600);
+            font-size: 12px;
+        }
+
+        .message-body {
+            background: var(--bg-secondary);
+            padding: 12px 16px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-200);
+            line-height: 1.6;
+            color: var(--gray-800);
+        }
+
+        .message-body strong {
+            color: var(--gray-900);
+            font-weight: 600;
+        }
+
+        .message-body em {
+            color: var(--gray-700);
+            font-style: italic;
+            display: block;
+            padding: 8px 12px;
+            margin: 8px 0;
+            background: var(--bg-accent);
+            border-left: 3px solid var(--medical-blue);
+            border-radius: var(--radius-sm);
+        }
+
+        /* Input area */
+        .input-container {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--gray-200);
+            padding: 16px 24px;
+        }
+
+        .input-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-field {
+            flex: 1;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-lg);
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--gray-900);
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
+            transition: all var(--transition-fast);
+            overflow-y: auto;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: var(--gray-500);
+        }
+
+        .send-button {
+            background: var(--medical-blue);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .send-button:hover:not(:disabled) {
+            background: var(--medical-blue-dark);
+            transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
-        
-        .notes-btn svg {
-            width: 14px;
-            height: 14px;
-            stroke: var(--accent-primary);
-        }
-        
-        /* Vary button colors */
-        .notes-btn:nth-child(1) svg {
-            stroke: var(--accent-primary);
-        }
-        
-        .notes-btn:nth-child(2) svg {
-            stroke: var(--accent-green);
-        }
-        
-        .notes-btn:nth-child(3) svg {
-            stroke: var(--accent-secondary);
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
-        .error {
-            color: #d32f2f;
-            background-color: #ffebee;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-
-        /* Make paragraphs in messages spaced appropriately */
-        .message p {
-            margin-bottom: 15px;
-        }
-
-        .message p:last-child {
-            margin-bottom: 0;
-        }
-
-        .message em {
-            font-style: italic;
-            color: var(--text-secondary);
-        }
-        
-        /* Improved readability for patient descriptions */
-        .patient-description {
-            font-style: italic;
-            color: var(--text-secondary);
-            padding: 12px;
-            border-left: 3px solid var(--accent-green);
-            margin-bottom: 15px;
-            border-radius: 4px;
-            font-size: 14px;
-            line-height: 1.6;
-            box-shadow: var(--shadow-sm);
-            background-color: rgba(181, 216, 200, 0.1);
-        }
-        
-        /* Interaction counter */
-        .interaction-tracker {
-            padding: 10px 15px;
-            background-color: var(--secondary-bg);
-            border-top: 1px solid var(--border-accent);
-            border-bottom: 1px solid var(--border-accent);
+        /* Right panel */
+        .right-panel {
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--gray-200);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            color: var(--text-secondary);
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--bg-tertiary);
+        }
+
+        .panel-tab {
+            flex: 1;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all var(--transition-fast);
             position: relative;
         }
-        
-        .interaction-counter {
+
+        .panel-tab:hover {
+            color: var(--gray-800);
+            background: var(--bg-accent);
+        }
+
+        .panel-tab.active {
+            color: var(--medical-blue);
+            border-bottom-color: var(--medical-blue);
+            background: var(--bg-secondary);
+        }
+
+        .panel-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .panel-content.active {
+            display: block;
+        }
+
+        /* Notes textarea */
+        .notes-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .notes-textarea {
+            flex: 1;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--gray-900);
+            resize: none;
+            transition: all var(--transition-fast);
+        }
+
+        .notes-textarea:focus {
+            outline: none;
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
+        }
+
+        .notes-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-button:hover {
+            background: var(--bg-accent);
+            border-color: var(--gray-400);
+            color: var(--gray-900);
+        }
+
+        .action-button svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Insights panel */
+        .insights-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .insight-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            transition: all var(--transition-fast);
+        }
+
+        .insight-card:hover {
+            border-color: var(--gray-300);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .insight-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        
-        .interaction-hint {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            max-width: 350px;
-            font-size: 12px;
-            color: var(--text-tertiary);
-            padding: 8px;
-            background-color: var(--primary-bg);
+
+        .insight-icon {
+            width: 20px;
+            height: 20px;
             border-radius: var(--radius-sm);
-            border: 1px solid var(--border-accent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            box-shadow: var(--shadow-md);
-            z-index: 10;
-            text-align: center;
-        }
-        
-        .interaction-number {
-            font-weight: 500;
-            color: var(--accent-primary);
-            cursor: help;
-            position: relative;
-        }
-        
-        .interaction-number:hover + .interaction-hint {
-            opacity: 1;
-        }
-        
-        .download-case-btn {
-            padding: 8px 15px;
-            font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 5px;
-            border-radius: var(--radius-sm);
-            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-            border: none;
-            color: white;
-            transition: var(--transition-all);
-        }
-        
-        .download-case-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(91, 155, 213, 0.25);
-        }
-        
-        .download-case-btn svg {
-            width: 14px;
-            height: 14px;
-        }
-        
-        .interaction-hint {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            max-width: 350px;
+            justify-content: center;
             font-size: 12px;
-            color: var(--text-tertiary);
-            padding: 8px;
-            background-color: var(--primary-bg);
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-accent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            box-shadow: var(--shadow-md);
-            z-index: 10;
-            text-align: center;
         }
-        
-        .interaction-tracker:hover .interaction-hint {
-            opacity: 1;
+
+        .insight-icon.info {
+            background: rgba(9, 105, 218, 0.1);
+            color: var(--medical-blue);
         }
-        
-        /* Welcome instructions */
-        .welcome-container {
-            margin-bottom: 0;
-            padding-bottom: 10px;
+
+        .insight-icon.success {
+            background: rgba(26, 127, 55, 0.1);
+            color: var(--success);
         }
-        
-        .welcome-instructions {
-            text-align: center;
-            margin: 10px auto;
-            max-width: 90%;
-            padding: 15px;
-            color: var(--text-secondary);
-            background: var(--secondary-bg);
+
+        .insight-icon.warning {
+            background: rgba(154, 103, 0, 0.1);
+            color: var(--warning);
+        }
+
+        .insight-content {
+            font-size: 13px;
             line-height: 1.5;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-accent);
-            box-shadow: var(--shadow-sm);
+            color: var(--gray-700);
         }
-        
-        .welcome-container.chat-started {
-            background-color: var(--tertiary-bg);
+
+        /* Progress tracker */
+        .progress-container {
+            background: var(--bg-tertiary);
             border-radius: var(--radius-md);
-            margin-bottom: 25px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .progress-count {
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
             position: relative;
         }
-        
-        .welcome-container.chat-started::after {
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--medical-blue), var(--medical-accent));
+            border-radius: 4px;
+            transition: width var(--transition-slow);
+            position: relative;
+        }
+
+        .progress-fill::after {
             content: '';
             position: absolute;
-            bottom: -15px;
+            top: 0;
             left: 0;
             right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shimmer 2s infinite;
         }
-        
-        .welcome-instructions p {
-            margin-bottom: 10px;
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
-        
-        .welcome-instructions p:last-child {
-            margin-bottom: 0;
+
+        /* Loading states */
+        .loading-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray-600);
+            font-size: 13px;
         }
-        
-        .welcome-instructions strong {
-            font-weight: 500;
+
+        .loading-dots {
+            display: flex;
+            gap: 4px;
         }
-        
-        .welcome-instructions a {
-            color: #4299e1;
-            text-decoration: none;
-            font-weight: 500;
+
+        .loading-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gray-500);
+            animation: loadingPulse 1.4s ease-in-out infinite;
         }
-        
-        /* Visual indicators for interaction progress */
-        .near-limit {
-            background-color: rgba(255, 237, 213, 0.5);
-            border-top: 1px solid #f59e0b;
+
+        .loading-dot:nth-child(1) { animation-delay: 0s; }
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes loadingPulse {
+            0%, 80%, 100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+            40% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
-        
-        .near-limit .counter {
-            color: #d97706;
+
+        /* Tooltips */
+        .tooltip {
+            position: relative;
         }
-        
-        .at-limit {
-            background-color: rgba(254, 226, 226, 0.5);
-            border-top: 1px solid #ef4444;
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gray-900);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-fast);
+            z-index: var(--z-tooltip);
         }
-        
-        .at-limit .counter {
-            color: #b91c1c;
-            font-weight: 600;
+
+        .tooltip:hover::after {
+            opacity: 1;
         }
-        .near-limit {
-            background-color: rgba(255, 237, 213, 0.5);
-            border-top: 1px solid #f59e0b;
-        }
-        
-        .near-limit .counter {
-            color: #d97706;
-        }
-        
-        .at-limit {
-            background-color: rgba(254, 226, 226, 0.5);
-            border-top: 1px solid #ef4444;
-        }
-        
-        .at-limit .counter {
-            color: #b91c1c;
-            font-weight: 600;
-        }
-        @media (max-width: 992px) {
-            body {
+
+        /* Mobile responsiveness */
+        @media (max-width: 1024px) {
+            .app-container {
                 grid-template-columns: 1fr;
-                grid-template-rows: auto auto 1fr auto;
-                padding: 10px;
+                grid-template-rows: 60px 1fr 60px;
             }
-            
-            .chat-container, .notes-panel {
+
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                top: 60px;
+                bottom: 0;
+                width: 280px;
+                z-index: var(--z-overlay);
+                transition: left var(--transition-base);
+                box-shadow: var(--shadow-xl);
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .right-panel {
+                position: fixed;
+                right: -320px;
+                top: 60px;
+                bottom: 0;
+                width: 320px;
+                z-index: var(--z-overlay);
+                transition: right var(--transition-base);
+                box-shadow: var(--shadow-xl);
+            }
+
+            .right-panel.open {
+                right: 0;
+            }
+
+            .mobile-nav {
                 grid-column: 1;
-            }
-            
-            .chat-container {
                 grid-row: 3;
+                display: flex;
+                background: var(--bg-secondary);
+                border-top: 1px solid var(--gray-200);
             }
-            
-            .notes-panel {
-                grid-row: 2;
-                min-height: 150px;
+
+            .mobile-nav-item {
+                flex: 1;
+                padding: 12px;
+                background: transparent;
+                border: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                font-size: 12px;
+                color: var(--gray-600);
+                cursor: pointer;
+                transition: all var(--transition-fast);
             }
-            
-            .controls {
-                grid-row: 4;
+
+            .mobile-nav-item:hover {
+                color: var(--gray-800);
+                background: var(--bg-accent);
             }
-		.controls {
-        grid-row: 4;
-    }
-}
 
-/* Loading Animation Styles */
-.loading-dots {
-    display: inline-block;
-    margin-left: 5px;
-}
+            .mobile-nav-item.active {
+                color: var(--medical-blue);
+            }
 
-.loading-dots .dot {
-    opacity: 0;
-    animation: dotFade 1.4s infinite;
-    display: inline-block;
-}
-
-.loading-dots .dot:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.loading-dots .dot:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.loading-dots .dot:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-@keyframes dotFade {
-    0%, 80%, 100% { opacity: 0; }
-    40% { opacity: 1; }
-}
-
-.disclaimer {
+            .mobile-nav-item svg {
+                width: 20px;
+                height: 20px;
+            }
         }
-.disclaimer {
-  width: 100%;
-  font-size: 11px;
-  color: var(--text-tertiary);
-  text-align: center;
-  padding: 8px;
-  margin-top: 5px;
-  background-color: var(--tertiary-bg);
-  border-top: 1px solid var(--border-accent);
-}
-</style>
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Focus visible */
+        *:focus-visible {
+            outline: 2px solid var(--medical-blue);
+            outline-offset: 2px;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-400);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-500);
+        }
+
+        /* Print styles */
+        @media print {
+            .sidebar,
+            .right-panel,
+            .header,
+            .input-container,
+            .mobile-nav {
+                display: none;
+            }
+
+            .main-content {
+                grid-column: 1 / -1;
+            }
+
+            .message {
+                break-inside: avoid;
+            }
+        }
+    </style>
 </head>
-<body>
-   <header>
- 	<a href="https://neuro-dx-secure.vercel.app/" class="home-button" title="Home">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-        </svg>
-    </a>
-    <h1>NeuroDX</h1>
-    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-light">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-    </button>
-</header>
-    
-    <div class="chat-container">
-        <div class="chat-messages" id="chat-messages">
-            <!-- Messages will appear here -->
-        </div>
-        
-        <div class="interaction-tracker" id="interaction-tracker">
-            <button class="new-case-btn" id="new-chat-btn">New Case</button>
-            
-            <div class="interaction-counter">
-                <span>Case Progress:</span>
-                <span class="interaction-number" id="interaction-number">Interaction <span id="interaction-count">1</span> of 20</span>
-                <div class="interaction-hint" id="interaction-hint">
-                    Interaction 1: Case introduction
+<body data-theme="light">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <a href="/" class="logo">
+                    <div class="logo-icon">NDX</div>
+                    <span>NeuroDX</span>
+                </a>
+            </div>
+            <div class="header-right">
+                <button class="action-button" id="theme-toggle" aria-label="Toggle theme">
+                    <svg class="theme-icon-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="theme-icon-dark" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <button class="action-button" id="settings-btn" aria-label="Settings">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m3.5-13.5L12 9l-3.5-3.5M20.5 7.5L17 11l-3.5-3.5M20.5 16.5L17 13l-3.5 3.5M3.5 16.5L7 13l3.5 3.5M3.5 7.5L7 11l3.5-3.5"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="case-selector">
+                <h3 class="case-selector-title">Start New Case</h3>
+                <button class="case-level-btn" data-level="beginner">
+                    <div>Beginner</div>
+                    <div class="case-level-description">Clear presentations, straightforward histories</div>
+                </button>
+                <button class="case-level-btn" data-level="intermediate">
+                    <div>Intermediate</div>
+                    <div class="case-level-description">Multiple symptoms, requires careful analysis</div>
+                </button>
+                <button class="case-level-btn" data-level="advanced">
+                    <div>Advanced</div>
+                    <div class="case-level-description">Complex presentations, diagnostic challenges</div>
+                </button>
+                <button class="case-level-btn" data-level="complex">
+                    <div>Complex</div>
+                    <div class="case-level-description">Multisystem involvement, rare conditions</div>
+                </button>
+            </div>
+
+            <div class="case-options">
+                <h3 class="case-selector-title">Special Modes</h3>
+                <button class="case-level-btn" data-mode="walkthrough">
+                    <div>System Walk Through</div>
+                    <div class="case-level-description">Guided demonstration of diagnostic process</div>
+                </button>
+                <button class="case-level-btn" data-mode="safe-start">
+                    <div>Safe Start Mode</div>
+                    <div class="case-level-description">Additional hints and guidance throughout</div>
+                </button>
+                <button class="case-level-btn" data-mode="clinical-flow">
+                    <div>Clinical Flow Training</div>
+                    <div class="case-level-description">Learn real-world diagnostic methodology</div>
+                </button>
+            </div>
+
+            <div class="quick-actions">
+                <h3 class="case-selector-title">Quick Actions</h3>
+                <button class="action-button" id="new-case-btn" style="width: 100%;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14m-7-7h14"></path>
+                    </svg>
+                    New Case
+                </button>
+                <button class="action-button" id="download-case-btn" style="width: 100%; margin-top: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Export Case
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="chat-header">
+                <div class="case-info">
+                    <h2 class="case-title" id="case-title">Welcome to NeuroDX</h2>
+                    <div class="case-status">
+                        <div class="status-indicator">
+                            <div class="status-dot"></div>
+                            <span id="case-status">Ready to begin</span>
+                        </div>
+                        <span class="progress-text" id="progress-text"></span>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="action-button tooltip" data-tooltip="Get help" id="help-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 16v-4c0-1.5 1-2 2-3s1.5-2 0-3.5-3.5-.5-4 1"></path>
+                            <circle cx="12" cy="20" r="0.5" fill="currentColor"></circle>
+                        </svg>
+                    </button>
+                    <button class="action-button tooltip" data-tooltip="View solution" id="solution-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
                 </div>
             </div>
-            
-            <button class="download-case-btn" id="download-case-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-                Download Case
-            </button>
-            
-           
-        </div>
-        
-        <div class="input-area">
-            <input type="text" id="user-input" placeholder="Type your message here...">
-            <button id="send-btn">Send</button>
-        </div>
-    </div>
-    
-    <!-- Notes Panel -->
-<div class="notes-panel">
-    <!-- Toggle Buttons -->
-    <div class="notes-toggle">
-        <button class="toggle-btn active" data-target="notes">Notes</button>
-        <button class="toggle-btn" data-target="cheatsheet">Cheat Sheet</button>
-    </div>
-    
-    <!-- Notes Content -->
-    <div class="toggle-content" id="notes-content">
-        <div class="notes-title">Clinical Notes</div>
-        <textarea class="notes-textarea" id="notes-textarea" placeholder="Type your notes here..."></textarea>
-        <div class="notes-controls">
-            <button class="notes-btn" id="copy-notes-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-                Copy
-            </button>
-            <button class="notes-btn" id="paste-notes-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                </svg>
-                Paste
-            </button>
-            <button class="notes-btn" id="download-notes-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-                Download
-            </button>
-        </div>
-    </div>
-    
-    <!-- Cheatsheet Content -->
-    <div class="toggle-content hidden" id="cheatsheet-content">
-        <div class="notes-title">NeuroDX Cheat Sheet</div>
-        <div class="cheatsheet-content">
-	
-		
-		<h4>Alternative Case Creation</h4>
-            <ul>
-		<li><strong>"System Walk Through":</strong> A clear demonstration of the process. </li> 
-                <li><strong>"Safe Start Mode":</strong> Generates additional guidance throughout the experience</li>
-		<li><strong>"Teach Exact Clinical Flow":</strong> A breakdown of the real diagnostic process</li>
-		<li><strong>Add Focus Area</strong> Type: "Can we practice a ____ Neuromuscular/Degenerative
-			/FND/etc. case?"</li> 
-            </ul>	
-	<h4>Support Commands</h4>
-	<ul>
-		<li><strong>"Uncertain/I don't know"</strong> - Receive help navigating the conversation.</li>
-		<li><strong>"Explain X"</strong> - Receive relevant explanation.</li>
-                <li><strong>"Next Steps"</strong> - Receive guidance on possible next steps.</li>
-                <li><strong>"Summary"</strong> - Receive a summary of interactions so far.</li>
-                <li><strong>"Reflection"</strong> - Receive reflections about previous sections of conversation.
-		<li><strong>"Full Solution"</strong> - Recieve a complete case breakdown</li>
-		<li><strong>"Evaluation"</strong> - Receive a breakdown of efforts so far.</li>
-		<li><strong>"Missed Insights"</strong> - Receive info on overlooked components.</li>
-		<li><strong>"Feedback"</strong> - Receive constructive criticism to hone your skills.</li>
 
+            <div class="chat-container" id="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Welcome message -->
+                    <div class="message system-message">
+                        <div class="message-content">
+                            <div class="message-body">
+                                <h3 style="margin-bottom: 12px; color: var(--medical-blue);">Welcome to NeuroDX Training Platform</h3>
+                                <p>Select a difficulty level from the sidebar to begin your neurological case simulation. Each patient presents unique challenges that mirror real clinical encounters.</p>
+                                <div style="margin-top: 16px; padding: 12px; background: var(--bg-accent); border-radius: var(--radius-md);">
+                                    <strong>Quick Tips:</strong>
+                                    <ul style="margin-top: 8px; padding-left: 20px;">
+                                        <li>Start with open-ended questions to gather comprehensive histories</li>
+                                        <li>Pay attention to both verbal and non-verbal cues</li>
+                                        <li>Type "Help" anytime for guidance or "Full Solution" to see the complete case analysis</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            </ul>
-            
-            <h4>Principles of the System</h4>
-            <ul>
-                <li>Start with open-ended questions</li>
-                <li>Listen for emotional cues</li>
-                <li>Explore symptom context before jumping to conclusions</li>
-                <li>Request Feedback from the system when uncertain.</li>
-		<li>Communicate your thoughts and instincts openly</li>
-            </ul>
-        </div>
-    </div>
-</div>
-    
-    <div class="controls">
-        <!-- New Case button moved to interaction tracker -->
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        class="input-field" 
+                        id="user-input" 
+                        placeholder="Type your message here..."
+                        rows="1"
+                        aria-label="Message input"
+                    ></textarea>
+                    <button class="send-button" id="send-btn" aria-label="Send message">
+                        <span>Send</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Panel -->
+        <aside class="right-panel" id="right-panel">
+            <div class="panel-tabs">
+                <button class="panel-tab active" data-panel="notes">Notes</button>
+                <button class="panel-tab" data-panel="insights">Insights</button>
+                <button class="panel-tab" data-panel="reference">Reference</button>
+            </div>
+
+            <!-- Notes Panel -->
+            <div class="panel-content active" id="notes-panel">
+                <div class="notes-container">
+                    <textarea 
+                        class="notes-textarea" 
+                        id="notes-textarea" 
+                        placeholder="Clinical notes...&#10;&#10;Patient History:&#10;- &#10;&#10;Physical Examination:&#10;- &#10;&#10;Differential Diagnosis:&#10;- &#10;&#10;Working Diagnosis:&#10;- "
+                        aria-label="Clinical notes"
+                    ></textarea>
+                    <div class="notes-actions">
+                        <button class="action-button" id="copy-notes-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="action-button" id="clear-notes-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                            Clear
+                        </button>
+                        <button class="action-button" id="download-notes-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Export
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insights Panel -->
+            <div class="panel-content" id="insights-panel">
+                <div class="insights-container">
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <span class="progress-title">Case Progress</span>
+                            <span class="progress-count" id="interaction-count">0/20 interactions</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div id="insights-list">
+                        <!-- Dynamic insights will be added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reference Panel -->
+            <div class="panel-content" id="reference-panel">
+                <div class="reference-container">
+                    <div class="insight-card">
+                        <div class="insight-title">
+                            <div class="insight-icon info">📋</div>
+                            Quick Commands
+                        </div>
+                        <div class="insight-content">
+                            <ul style="padding-left: 20px; margin: 8px 0;">
+                                <li><strong>"Help"</strong> - Get contextual guidance</li>
+                                <li><strong>"Summary"</strong> - Review case progress</li>
+                                <li><strong>"Full Solution"</strong> - View complete analysis</li>
+                                <li><strong>"Next Steps"</strong> - Suggested actions</li>
+                                <li><strong>"Reflection"</strong> - Case insights</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="insight-title">
+                            <div class="insight-icon success">🎯</div>
+                            Best Practices
+                        </div>
+                        <div class="insight-content">
+                            <ul style="padding-left: 20px; margin: 8px 0;">
+                                <li>Begin with open-ended questions</li>
+                                <li>Explore symptom timing and triggers</li>
+                                <li>Consider psychosocial factors</li>
+                                <li>Build rapport before complex questions</li>
+                                <li>Document findings systematically</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="insight-title">
+                            <div class="insight-icon warning">💡</div>
+                            Clinical Pearls
+                        </div>
+                        <div class="insight-content">
+                            <p>Neurological symptoms rarely exist in isolation. Always consider:</p>
+                            <ul style="padding-left: 20px; margin: 8px 0;">
+                                <li>Medication side effects</li>
+                                <li>Metabolic disturbances</li>
+                                <li>Psychiatric comorbidities</li>
+                                <li>Social determinants of health</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav" style="display: none;">
+            <button class="mobile-nav-item" data-panel="sidebar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="9" y1="3" x2="9" y2="21"></line>
+                </svg>
+                Cases
+            </button>
+            <button class="mobile-nav-item active" data-panel="chat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Chat
+            </button>
+            <button class="mobile-nav-item" data-panel="right">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Notes
+            </button>
+        </nav>
     </div>
 
     <script>
-	    /* Step 3: Add the JavaScript for toggling dark mode */
-// Add this to your existing JavaScript
-document.addEventListener('DOMContentLoaded', () => {
-    const themeToggle = document.getElementById('theme-toggle');
-    
-    // Check for saved theme preference or respect OS preference
-    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const savedTheme = localStorage.getItem('theme');
-    
-    // Apply initial theme
-    if (savedTheme === 'dark' || (!savedTheme && prefersDarkMode)) {
-        document.documentElement.classList.add('dark-theme');
-        updateThemeIcon(true);
-    }
-    
-    // Toggle theme when button is clicked
-    themeToggle.addEventListener('click', () => {
-        const isDarkMode = document.documentElement.classList.toggle('dark-theme');
-        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-        updateThemeIcon(isDarkMode);
-    });
-    
-    // Update the icon based on current theme
-    function updateThemeIcon(isDarkMode) {
-        if (isDarkMode) {
-            themeToggle.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-dark">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-            `;
-        } else {
-            themeToggle.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-light">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                </svg>
-            `;
-        }
-    }
-});
-        // DOM elements
-        const chatMessages = document.getElementById('chat-messages');
-        const userInput = document.getElementById('user-input');
-        const sendBtn = document.getElementById('send-btn');
-        const newChatBtn = document.getElementById('new-chat-btn');
-        const notesTextarea = document.getElementById('notes-textarea');
-        const copyNotesBtn = document.getElementById('copy-notes-btn');
-        const pasteNotesBtn = document.getElementById('paste-notes-btn');
-        const downloadNotesBtn = document.getElementById('download-notes-btn');
-        
-        // Floating element collision prevention
-        function adjustPositioning() {
-            const header = document.querySelector('header');
-            const notesPanel = document.querySelector('.notes-panel');
-            
-            if (header && notesPanel) {
-                const headerHeight = header.offsetHeight;
-                const headerBottom = headerHeight + 15; // 15px is body padding
-                notesPanel.style.top = (headerBottom + 10) + 'px';
-                notesPanel.style.height = `calc(100vh - ${headerBottom + 35}px)`;
-            }
-        }
-        
-        // Adjust positioning on load and resize
-        window.addEventListener('load', adjustPositioning);
-        window.addEventListener('resize', adjustPositioning);
-        
-        
-        // Conversation history
-        let conversationHistory = [];
-        
-        // Track interaction count
-        let interactionCount = 1;
-        
-        // Function to download chat history
-        function downloadChatHistory() {
-            // Get all message elements
-            const messages = chatMessages.querySelectorAll('.message');
-            if (messages.length === 0) {
-                alert('No conversation to download yet.');
-                return;
-            }
-            
-            // Create text content
-            let chatText = 'NEURODX - CASE CONVERSATION LOG\n\n';
-            let caseDate = new Date().toLocaleString();
-            chatText += `Date: ${caseDate}\n\n`;
-            
-            // Get current interaction count
-            chatText += `Total Interactions: ${interactionCount-1}\n\n`;
-            chatText += '-'.repeat(50) + '\n\n';
-            
-            messages.forEach(msg => {
-                const role = msg.classList.contains('user-message') ? 'Doctor' : 'Patient';
-                // Get the text content, stripping HTML
-                let textContent = msg.textContent || msg.innerText;
-                chatText += `${role}: ${textContent}\n\n`;
-            });
-            
-            // Add date and time
-            chatText += `\n----- End of conversation log -----`;
-            
-            // Create download
-            const blob = new Blob([chatText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `neurodx-case-${Date.now()}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-          }
+        // State management
+        const state = {
+            conversationHistory: [],
+            interactionCount: 0,
+            currentCase: null,
+            isProcessing: false,
+            insights: []
+        };
 
-// Function to clean empty patient descriptions
-        function cleanEmptyDescriptions(container) {
-            // Target all patient description elements within the container
-            const patientDescriptions = container.querySelectorAll('.patient-description');
-            
-            // Examine each element
-            patientDescriptions.forEach(element => {
-                // Check if element is empty or contains only whitespace
-                if (!element.textContent.trim()) {
-                    // Remove element completely
-                    element.remove();
-                }
-            });
-        }
-        
-        // Function to scroll chat to bottom
-        function scrollToBottom() {
-            // Scroll chat messages container
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            
-            // Also scroll the entire page to ensure the response is visible
-            window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Function to copy notes
-        function copyNotes() {
-            notesTextarea.select();
-            document.execCommand('copy');
-            
-            // Provide visual feedback
-            const originalText = copyNotesBtn.innerHTML;
-            copyNotesBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Copied!
-            `;
-            
-            setTimeout(() => {
-                copyNotesBtn.innerHTML = originalText;
-            }, 2000);
-        }
-        
-        // Function to paste content to notes
-        async function pasteToNotes() {
-            try {
-                const text = await navigator.clipboard.readText();
-                notesTextarea.value += text;
-            } catch (err) {
-                console.error('Failed to read clipboard:', err);
-                alert('Unable to paste. Check browser permissions.');
-            }
-        }
-        
-        // Function to download notes
-        function downloadNotes() {
-            const notesText = notesTextarea.value.trim();
-            if (!notesText) {
-                alert('Notes are empty. Nothing to download.');
-                return;
-            }
-            
-            const blob = new Blob([notesText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `neurodx-notes-${new Date().toISOString().slice(0, 10)}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-        
-        // Function to update interaction hint based on current count
-        function updateInteractionHint() {
-            const hintElement = document.getElementById('interaction-hint');
-            const countElement = document.getElementById('interaction-count');
-            
-            if (countElement) countElement.textContent = interactionCount;
-            
-            if (hintElement) {
-                let hintText = '';
-                
-                if (interactionCount === 1) {
-                    hintText = 'Interaction 1: Case introduction';
-                } else if (interactionCount >= 2 && interactionCount <= 11) {
-                    hintText = 'Interactions 2-11: Information Gathering';
-                } else if (interactionCount === 12) {
-                    hintText = 'Interaction 12: Wrap-up and Summary';
-                } else if (interactionCount >= 13 && interactionCount <= 14) {
-                    hintText = 'Interactions 13-14: Propose Final Diagnosis.';
-                } else if (interactionCount === 15) {
-                    hintText = 'Interaction 15: Request Feedback and Learning opportunities';
-                } else if (interactionCount >= 16 && interactionCount <= 19) {
-                    hintText = 'Interactions 16-19: Final clarifications and questions';
-                } else if (interactionCount === 20) {
-                    hintText = 'Interaction 20: Complete. Download Case/Notes and Begin a new case';
-                }
-                
-                hintElement.textContent = hintText;
+        // DOM elements cache
+        const elements = {
+            chatMessages: document.getElementById('chat-messages'),
+            userInput: document.getElementById('user-input'),
+            sendBtn: document.getElementById('send-btn'),
+            caseTitle: document.getElementById('case-title'),
+            caseStatus: document.getElementById('case-status'),
+            progressText: document.getElementById('progress-text'),
+            interactionCount: document.getElementById('interaction-count'),
+            progressFill: document.getElementById('progress-fill'),
+            notesTextarea: document.getElementById('notes-textarea'),
+            insightsList: document.getElementById('insights-list'),
+            themeToggle: document.getElementById('theme-toggle'),
+            sidebar: document.getElementById('sidebar'),
+            rightPanel: document.getElementById('right-panel')
+        };
+
+        // Theme management
+        class ThemeManager {
+            constructor() {
+                this.theme = localStorage.getItem('theme') || 'light';
+                this.applyTheme();
             }
 
-            
-            
-            // Update tracker appearance based on progress
-            const interactionNumber = document.getElementById('interaction-number');
-            if (interactionNumber) {
-                // Reset any previously added classes
-                interactionNumber.classList.remove('near-limit', 'at-limit');
+            toggle() {
+                this.theme = this.theme === 'light' ? 'dark' : 'light';
+                this.applyTheme();
+                localStorage.setItem('theme', this.theme);
+            }
+
+            applyTheme() {
+                document.body.setAttribute('data-theme', this.theme);
+                const lightIcon = document.querySelector('.theme-icon-light');
+                const darkIcon = document.querySelector('.theme-icon-dark');
                 
-                // Add visual indicator when approaching limit
-                if (interactionCount >= 15 && interactionCount < 20) {
-                    interactionNumber.classList.add('near-limit');
-                } else if (interactionCount >= 20) {
-                    interactionNumber.classList.add('at-limit');
+                if (this.theme === 'dark') {
+                    lightIcon.style.display = 'none';
+                    darkIcon.style.display = 'block';
+                } else {
+                    lightIcon.style.display = 'block';
+                    darkIcon.style.display = 'none';
                 }
             }
         }
-        
-       function initializeChat() {
-    chatMessages.innerHTML = '';
-    
-    // Reset interaction count
-    interactionCount = 1;
-    
-    // Initialize with empty conversation history
-    // System message is now handled on the backend
-    conversationHistory = [];
-            // Display welcome message with enhanced formatting
-            const welcomeContainer = document.createElement('div');
-            welcomeContainer.className = 'welcome-container';
-            
-            const welcomeMessage = document.createElement('div');
-            welcomeMessage.className = 'welcome-instructions';
-            welcomeMessage.innerHTML = `
-                <p>Welcome to <a href="#">NeuroDX</a> </p>
-                <p>Type <a href="#">Beginner</a>, <a href="#">Intermediate</a>, <a href="#">Advanced</a>, or <a href="#">Complex</a> below to begin a new case.</p>
-                <p>Treat each case like a <a href="#">Real Human</a> and <a href="#">Ask for Guidance</a> when needed.</p>
-		<p style="font-size: 8px;">Lehman Solutions</p>
-            `;
-            
-            welcomeContainer.appendChild(welcomeMessage);
-            chatMessages.appendChild(welcomeContainer);
-            
-            // Update interaction countA
-            updateInteractionHint();
-        }
 
-      // Function to call the Chat API
-// Replace your current callGptApi function with this:
-async function callGptApi(messages) {
-    try {
-        // Log what we're sending for debugging
-        console.log("Sending messages:", messages);
-        
-        // Send the complete conversation history (excluding system message)
-        const conversationOnly = messages.filter(msg => 
-            msg.role === "user" || msg.role === "assistant"
-        );
-        
-        const response = await fetch('/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: messages[messages.length-1].content,
-                conversationHistory: conversationOnly
-            })
-        });
-        
-        // Handle response
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(`API Error: ${errorData.error?.message || response.statusText}`);
-        }
-        
-        const data = await response.json();
-        return data.content;
-    } catch (error) {
-        console.error('API Error:', error);
-        throw error;
-    }
-}
-        
-        // Function to handle sending a message
-        async function handleSendMessage() {
-            const message = userInput.value.trim();
-            if (!message) return;
-            
-            // Check if this is the first message - if so, add a visual separator
-            const welcomeContainer = document.querySelector('.welcome-container');
-            if (welcomeContainer && !welcomeContainer.classList.contains('chat-started')) {
-                welcomeContainer.classList.add('chat-started');
-            }
-            
-            // Optionally prevent sending if over limit (uncomment to enable)
-            /*
-            if (interactionCount > 20) {
-                alert("Maximum Interactions Reached. Remember to download your Chat and Notes before starting a New Case.");
-                return;
-            }
-            */
-            
-            // Add user message to chat
-            const userMessageElement = document.createElement('div');
-            userMessageElement.className = 'message user-message';
-            userMessageElement.textContent = message;
-            chatMessages.appendChild(userMessageElement);
-            
-            // Scroll after user message
-            scrollToBottom();
-            
-            // Add to conversation history
-            conversationHistory.push({
-                role: "user",
-                content: message
-            });
-            
-           // Clear input field
-userInput.value = "";
-
-// Create loading message
-const loadingMessage = document.createElement('div');
-loadingMessage.className = 'message assistant-message';
-loadingMessage.id = 'loading-message';
-
-// Create container for text and animation
-const contentContainer = document.createElement('span');
-contentContainer.textContent = 'Content Loading, Please Wait';
-
-// Create dots container with animation
-const dotsContainer = document.createElement('span');
-dotsContainer.className = 'loading-dots';
-dotsContainer.innerHTML = '<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>';
-
-// Append both to the loading message
-loadingMessage.appendChild(contentContainer);
-loadingMessage.appendChild(dotsContainer);
-
-// Add to chat
-chatMessages.appendChild(loadingMessage);
-
-// Scroll to show loading message
-scrollToBottom();
-            
-            try {
-                // Call the API
-                const response = await callGptApi(conversationHistory);
+        // Message formatting with medical context
+        class MessageFormatter {
+            static formatAssistantMessage(content) {
+                // Process strong tags
+                content = content.replace(/<strong>(.*?)<\/strong>/g, '<strong>$1</strong>');
                 
-                // Add response to conversation history
-                conversationHistory.push({
-                    role: "assistant",
-                    content: response
+                // Process emphasis tags for patient observations
+                content = content.replace(/<em>(.*?)<\/em>/g, '<em>$1</em>');
+                
+                // Process line breaks
+                content = content.replace(/\n\n/g, '</p><p>');
+                content = '<p>' + content + '</p>';
+                
+                // Clean up empty paragraphs
+                content = content.replace(/<p><\/p>/g, '');
+                
+                return content;
+            }
+
+            static createMessageElement(role, content, timestamp = new Date()) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                
+                const avatarDiv = document.createElement('div');
+                avatarDiv.className = `message-avatar ${role}-avatar`;
+                avatarDiv.textContent = role === 'user' ? 'DR' : 'PT';
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'message-header';
+                
+                const authorSpan = document.createElement('span');
+                authorSpan.className = 'message-author';
+                authorSpan.textContent = role === 'user' ? 'Doctor' : 'Patient';
+                
+                const timeSpan = document.createElement('span');
+                timeSpan.className = 'message-time';
+                timeSpan.textContent = timestamp.toLocaleTimeString('en-US', { 
+                    hour: 'numeric', 
+                    minute: '2-digit' 
                 });
                 
-                // Remove loading message
-                const loadingElement = document.getElementById('loading-message');
-                if (loadingElement) loadingElement.remove();
+                headerDiv.appendChild(authorSpan);
+                headerDiv.appendChild(timeSpan);
                 
-                // Format and display the response
-                const responseElement = document.createElement('div');
-                responseElement.className = 'message assistant-message';
+                const bodyDiv = document.createElement('div');
+                bodyDiv.className = 'message-body';
                 
-                // Process text for improved formatting
-                // First identify asterisk-wrapped content for patient descriptions
-                let formattedText = response;
+                if (role === 'assistant') {
+                    bodyDiv.innerHTML = this.formatAssistantMessage(content);
+                } else {
+                    bodyDiv.textContent = content;
+                }
                 
-                // Enhanced formatting for patient descriptions wrapped in asterisks
-                formattedText = formattedText.replace(/\*(.*?)\*/g, (match, content) => {
-                    // Only create patient description divs for non-empty content
-                    if (content.trim()) {
-                        return `<div class="patient-description">${content}</div>`;
-                    } else {
-                        // Return empty string for empty descriptions
-                        return '';
+                contentDiv.appendChild(headerDiv);
+                contentDiv.appendChild(bodyDiv);
+                
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(contentDiv);
+                
+                return messageDiv;
+            }
+
+            static createLoadingMessage() {
+                const messageDiv = this.createMessageElement('assistant', '', new Date());
+                const bodyDiv = messageDiv.querySelector('.message-body');
+                
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'loading-indicator';
+                loadingDiv.innerHTML = `
+                    <span>Patient is thinking</span>
+                    <div class="loading-dots">
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                    </div>
+                `;
+                
+                bodyDiv.appendChild(loadingDiv);
+                messageDiv.id = 'loading-message';
+                
+                return messageDiv;
+            }
+        }
+
+        // Insights management
+        class InsightsManager {
+            static generateInsight(interaction, message) {
+                const insights = [];
+                
+                // Progress-based insights
+                if (interaction === 1) {
+                    insights.push({
+                        type: 'info',
+                        title: 'Case Started',
+                        content: 'Remember to establish rapport and gather comprehensive history.'
+                    });
+                } else if (interaction === 5) {
+                    insights.push({
+                        type: 'info',
+                        title: 'Early Assessment',
+                        content: 'Consider formulating initial differential diagnoses based on gathered information.'
+                    });
+                } else if (interaction === 10) {
+                    insights.push({
+                        type: 'warning',
+                        title: 'Mid-Case Review',
+                        content: 'Have you explored all relevant systems? Consider psychosocial factors.'
+                    });
+                } else if (interaction === 15) {
+                    insights.push({
+                        type: 'success',
+                        title: 'Approaching Conclusion',
+                        content: 'Time to synthesize findings and propose your diagnosis.'
+                    });
+                }
+                
+                // Content-based insights
+                if (message.toLowerCase().includes('pain')) {
+                    insights.push({
+                        type: 'info',
+                        title: 'Pain Assessment',
+                        content: 'Remember OPQRST: Onset, Provocation, Quality, Radiation, Severity, Time'
+                    });
+                }
+                
+                return insights;
+            }
+
+            static displayInsight(insight) {
+                const insightDiv = document.createElement('div');
+                insightDiv.className = 'insight-card';
+                insightDiv.style.opacity = '0';
+                
+                insightDiv.innerHTML = `
+                    <div class="insight-title">
+                        <div class="insight-icon ${insight.type}">
+                            ${insight.type === 'info' ? 'ℹ️' : insight.type === 'success' ? '✅' : '⚠️'}
+                        </div>
+                        ${insight.title}
+                    </div>
+                    <div class="insight-content">${insight.content}</div>
+                `;
+                
+                elements.insightsList.insertBefore(insightDiv, elements.insightsList.firstChild);
+                
+                // Animate in
+                setTimeout(() => {
+                    insightDiv.style.transition = 'opacity 300ms ease-in-out';
+                    insightDiv.style.opacity = '1';
+                }, 50);
+                
+                // Keep only last 5 insights
+                const allInsights = elements.insightsList.querySelectorAll('.insight-card');
+                if (allInsights.length > 5) {
+                    allInsights[allInsights.length - 1].remove();
+                }
+            }
+        }
+
+        // API communication
+        class APIClient {
+            static async sendMessage(message, conversationHistory) {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        conversationHistory: conversationHistory
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error?.message || 'Failed to get response');
+                }
+
+                const data = await response.json();
+                return data.content;
+            }
+        }
+
+        // Main application controller
+        class NeuroDXApp {
+            constructor() {
+                this.themeManager = new ThemeManager();
+                this.setupEventListeners();
+                this.setupAutoResize();
+                this.checkMobileView();
+            }
+
+            setupEventListeners() {
+                // Chat interactions
+                elements.sendBtn.addEventListener('click', () => this.handleSendMessage());
+                elements.userInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.handleSendMessage();
                     }
                 });
-                
-                // Split by paragraphs and create HTML with improved readability
-                const paragraphs = formattedText.split("\n\n");
-                let htmlContent = '';
-                
-                paragraphs.forEach(paragraph => {
-                    if (paragraph.trim()) {
-                        // Check if this is already a wrapped patient description
-                        if (paragraph.includes('<div class="patient-description">')) {
-                            htmlContent += paragraph;
-                        } else {
-                            htmlContent += `<p>${paragraph}</p>`;
+
+                // Theme toggle
+                elements.themeToggle.addEventListener('click', () => {
+                    this.themeManager.toggle();
+                });
+
+                // Case selection
+                document.querySelectorAll('.case-level-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const level = e.currentTarget.dataset.level;
+                        const mode = e.currentTarget.dataset.mode;
+                        
+                        if (level) {
+                            this.startNewCase(level);
+                        } else if (mode) {
+                            this.startSpecialMode(mode);
                         }
+                    });
+                });
+
+                // Panel tabs
+                document.querySelectorAll('.panel-tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        this.switchPanel(e.currentTarget.dataset.panel);
+                    });
+                });
+
+                // Notes actions
+                document.getElementById('copy-notes-btn').addEventListener('click', () => {
+                    this.copyNotes();
+                });
+
+                document.getElementById('clear-notes-btn').addEventListener('click', () => {
+                    if (confirm('Clear all notes?')) {
+                        elements.notesTextarea.value = '';
                     }
                 });
-                
-                responseElement.innerHTML = htmlContent || formattedText;
-                chatMessages.appendChild(responseElement);
-                
-		// Clean any empty descriptions that might have been created
-                cleanEmptyDescriptions(responseElement);
-                chatMessages.appendChild(responseElement);
 
-                // Scroll to the bottom of the chat messages
-                scrollToBottom();
+                document.getElementById('download-notes-btn').addEventListener('click', () => {
+                    this.downloadNotes();
+                });
+
+                // Case actions
+                document.getElementById('new-case-btn').addEventListener('click', () => {
+                    if (confirm('Start a new case? Current progress will be lost.')) {
+                        this.resetCase();
+                    }
+                });
+
+                document.getElementById('download-case-btn').addEventListener('click', () => {
+                    this.downloadCase();
+                });
+
+                // Help actions
+                document.getElementById('help-btn').addEventListener('click', () => {
+                    this.sendHelpCommand();
+                });
+
+                document.getElementById('solution-btn').addEventListener('click', () => {
+                    this.sendSolutionCommand();
+                });
+
+                // Mobile navigation
+                document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        this.handleMobileNav(e.currentTarget.dataset.panel);
+                    });
+                });
+
+                // Window resize
+                window.addEventListener('resize', () => this.checkMobileView());
+            }
+
+            setupAutoResize() {
+                const textarea = elements.userInput;
+                textarea.addEventListener('input', () => {
+                    textarea.style.height = 'auto';
+                    textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+                });
+            }
+
+            checkMobileView() {
+                const isMobile = window.innerWidth <= 1024;
+                const mobileNav = document.querySelector('.mobile-nav');
                 
-                // Increment interaction count and update the hint
-                interactionCount++;
-                updateInteractionHint();
-                
-                // If reached maximum interactions, provide a note
-                if (interactionCount > 20) {
-                    const limitMessage = document.createElement('div');
-                    limitMessage.className = 'message assistant-message';
-                    limitMessage.innerHTML = `
-                        <p><strong>Note:</strong> You've reached 20 interactions for this case. Please submit your final diagnosis 
-                        or click "New Case" to start a fresh case.</p>
-                    `;
-                    chatMessages.appendChild(limitMessage);
-                    scrollToBottom();
-                    
-                    // Optionally disable further interactions
-                    // userInput.disabled = true;
-                    // sendBtn.disabled = true;
+                if (isMobile) {
+                    mobileNav.style.display = 'flex';
+                    elements.sidebar.classList.remove('open');
+                    elements.rightPanel.classList.remove('open');
+                } else {
+                    mobileNav.style.display = 'none';
+                    elements.sidebar.classList.remove('open');
+                    elements.rightPanel.classList.remove('open');
                 }
-            } catch (error) {
-                // Remove loading message
-                const loadingElement = document.getElementById('loading-message');
-                if (loadingElement) loadingElement.remove();
-                
-                // Display error message
-                const errorElement = document.createElement('div');
-                errorElement.className = 'message assistant-message error';
-                errorElement.textContent = `Error: ${error.message}. Please check your API key or network connection.`;
-                chatMessages.appendChild(errorElement);
-                
-                // Scroll to show error message
-                scrollToBottom();
             }
-            
-            // Scroll to bottom
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-        
-        // Event listeners
-        sendBtn.addEventListener('click', handleSendMessage);
-        
-        userInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                handleSendMessage();
-            }
-        });
-        
-        newChatBtn.addEventListener('click', function() {
-            initializeChat();
-        });
-        
-        // Event listeners for notes functionality
-        copyNotesBtn.addEventListener('click', copyNotes);
-        pasteNotesBtn.addEventListener('click', pasteToNotes);
-        downloadNotesBtn.addEventListener('click', downloadNotes);
-        // After your existing event listeners for notes buttons
 
-// Toggle functionality for notes/cheatsheet
-document.addEventListener('DOMContentLoaded', function() {
-  const toggleBtns = document.querySelectorAll('.toggle-btn');
-  
-  toggleBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      // Remove active class from all buttons
-      toggleBtns.forEach(b => b.classList.remove('active'));
-      
-      // Add active class to clicked button
-      this.classList.add('active');
-      
-      // Hide all content sections
-      document.querySelectorAll('.toggle-content').forEach(content => {
-        content.classList.add('hidden');
-      });
-      
-      // Show the target content
-      const targetId = this.dataset.target + '-content';
-      document.getElementById(targetId).classList.remove('hidden');
-    });
-  });
-});
-        // Event listener for downloading chat history
-        const downloadCaseBtn = document.getElementById('download-case-btn');
-        if (downloadCaseBtn) {
-            downloadCaseBtn.addEventListener('click', downloadChatHistory);
+            handleMobileNav(panel) {
+                // Update active state
+                document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                event.target.closest('.mobile-nav-item').classList.add('active');
+
+                // Toggle panels
+                if (panel === 'sidebar') {
+                    elements.sidebar.classList.toggle('open');
+                    elements.rightPanel.classList.remove('open');
+                } else if (panel === 'right') {
+                    elements.rightPanel.classList.toggle('open');
+                    elements.sidebar.classList.remove('open');
+                } else {
+                    elements.sidebar.classList.remove('open');
+                    elements.rightPanel.classList.remove('open');
+                }
+            }
+
+            switchPanel(panelName) {
+                // Update tab states
+                document.querySelectorAll('.panel-tab').forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.panel === panelName);
+                });
+
+                // Update panel visibility
+                document.querySelectorAll('.panel-content').forEach(panel => {
+                    panel.classList.toggle('active', panel.id === `${panelName}-panel`);
+                });
+            }
+
+            async startNewCase(level) {
+                // Update UI
+                document.querySelectorAll('.case-level-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                event.target.closest('.case-level-btn').classList.add('active');
+
+                // Reset state
+                this.resetCase();
+                
+                // Update case info
+                elements.caseTitle.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Case`;
+                elements.caseStatus.textContent = 'Case in progress';
+                
+                // Send initial message
+                await this.sendMessage(level);
+            }
+
+            async startSpecialMode(mode) {
+                // Update UI
+                document.querySelectorAll('.case-level-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                event.target.closest('.case-level-btn').classList.add('active');
+
+                // Reset state
+                this.resetCase();
+                
+                // Update case info
+                const modeNames = {
+                    'walkthrough': 'System Walk Through',
+                    'safe-start': 'Safe Start Mode',
+                    'clinical-flow': 'Clinical Flow Training'
+                };
+                
+                elements.caseTitle.textContent = modeNames[mode];
+                elements.caseStatus.textContent = 'Special mode active';
+                
+                // Send initial message
+                await this.sendMessage(modeNames[mode]);
+            }
+
+            resetCase() {
+                state.conversationHistory = [];
+                state.interactionCount = 0;
+                state.currentCase = null;
+                state.insights = [];
+                
+                // Clear chat except welcome message
+                const messages = elements.chatMessages.querySelectorAll('.message:not(.system-message)');
+                messages.forEach(msg => msg.remove());
+                
+                // Reset UI
+                elements.caseTitle.textContent = 'Welcome to NeuroDX';
+                elements.caseStatus.textContent = 'Ready to begin';
+                elements.progressText.textContent = '';
+                this.updateProgress();
+                
+                // Clear insights
+                elements.insightsList.innerHTML = '';
+            }
+
+            async handleSendMessage() {
+                const message = elements.userInput.value.trim();
+                if (!message || state.isProcessing) return;
+
+                await this.sendMessage(message);
+            }
+
+            async sendMessage(message) {
+                try {
+                    state.isProcessing = true;
+                    elements.sendBtn.disabled = true;
+                    
+                    // Add user message
+                    const userMessageEl = MessageFormatter.createMessageElement('user', message);
+                    elements.chatMessages.appendChild(userMessageEl);
+                    
+                    // Clear input and reset height
+                    elements.userInput.value = '';
+                    elements.userInput.style.height = 'auto';
+                    
+                    // Add to history
+                    state.conversationHistory.push({
+                        role: 'user',
+                        content: message
+                    });
+
+		    // Show loading message
+                    const loadingMessage = MessageFormatter.createLoadingMessage();
+                    elements.chatMessages.appendChild(loadingMessage);
+                    
+                    // Scroll to bottom
+                    this.scrollToBottom();
+                    
+                    // Send to API
+                    const response = await APIClient.sendMessage(message, state.conversationHistory);
+                    
+                    // Remove loading message
+                    document.getElementById('loading-message')?.remove();
+                    
+                    // Add assistant response
+                    const assistantMessageEl = MessageFormatter.createMessageElement('assistant', response);
+                    elements.chatMessages.appendChild(assistantMessageEl);
+                    
+                    // Update conversation history
+                    state.conversationHistory.push({
+                        role: 'assistant',
+                        content: response
+                    });
+                    
+                    // Update interaction count
+                    state.interactionCount++;
+                    this.updateProgress();
+                    
+                    // Generate insights
+                    const insights = InsightsManager.generateInsight(state.interactionCount, message);
+                    insights.forEach(insight => InsightsManager.displayInsight(insight));
+                    
+                    // Scroll to bottom
+                    this.scrollToBottom();
+                    
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    this.showError('Failed to send message. Please try again.');
+                } finally {
+                    state.isProcessing = false;
+                    elements.sendBtn.disabled = false;
+                    elements.userInput.focus();
+                }
+            }
+
+            async sendHelpCommand() {
+                await this.sendMessage('Help');
+            }
+
+            async sendSolutionCommand() {
+                if (confirm('View the full solution? This will end the current case.')) {
+                    await this.sendMessage('Full Solution');
+                }
+            }
+
+            updateProgress() {
+                const progress = (state.interactionCount / 20) * 100;
+                elements.progressFill.style.width = `${progress}%`;
+                elements.interactionCount.textContent = `${state.interactionCount}/20 interactions`;
+                
+                if (state.interactionCount > 0) {
+                    elements.progressText.textContent = `Interaction ${state.interactionCount} of 20`;
+                }
+                
+                // Update status based on progress
+                if (state.interactionCount >= 15) {
+                    elements.caseStatus.textContent = 'Nearing completion';
+                    document.querySelector('.status-dot').style.background = 'var(--warning)';
+                } else if (state.interactionCount >= 20) {
+                    elements.caseStatus.textContent = 'Case complete';
+                    document.querySelector('.status-dot').style.background = 'var(--danger)';
+                }
+            }
+
+            scrollToBottom() {
+                elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+            }
+
+            showError(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'message system-message';
+                errorDiv.innerHTML = `
+                    <div class="message-content">
+                        <div class="message-body" style="background: rgba(207, 34, 46, 0.1); border-color: var(--danger);">
+                            <strong style="color: var(--danger);">Error:</strong> ${message}
+                        </div>
+                    </div>
+                `;
+                elements.chatMessages.appendChild(errorDiv);
+                this.scrollToBottom();
+            }
+
+            copyNotes() {
+                elements.notesTextarea.select();
+                document.execCommand('copy');
+                
+                // Visual feedback
+                const btn = document.getElementById('copy-notes-btn');
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
+                btn.style.color = 'var(--success)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.style.color = '';
+                }, 2000);
+            }
+
+            downloadNotes() {
+                const notes = elements.notesTextarea.value;
+                if (!notes.trim()) {
+                    alert('No notes to download');
+                    return;
+                }
+                
+                const blob = new Blob([notes], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `neurodx-notes-${new Date().toISOString().split('T')[0]}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+
+            downloadCase() {
+                if (state.conversationHistory.length === 0) {
+                    alert('No case to download');
+                    return;
+                }
+                
+                let caseText = `NEURODX CASE TRANSCRIPT\n`;
+                caseText += `Date: ${new Date().toLocaleString()}\n`;
+                caseText += `Total Interactions: ${state.interactionCount}\n`;
+                caseText += `${'='.repeat(50)}\n\n`;
+                
+                state.conversationHistory.forEach((msg, index) => {
+                    const role = msg.role === 'user' ? 'DOCTOR' : 'PATIENT';
+                    caseText += `[${role}]\n${msg.content}\n\n`;
+                });
+                
+                caseText += `\n${'='.repeat(50)}\n`;
+                caseText += `CLINICAL NOTES\n`;
+                caseText += `${'='.repeat(50)}\n`;
+                caseText += elements.notesTextarea.value || 'No notes recorded';
+                
+                const blob = new Blob([caseText], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `neurodx-case-${Date.now()}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
         }
-        
-        // Initialize the chat when the page loads
+
+        // Initialize application
         document.addEventListener('DOMContentLoaded', () => {
-            initializeChat();
+            const app = new NeuroDXApp();
             
-            // Set initial focus to input field for immediate typing
-            setTimeout(() => {
-                userInput.focus();
-            }, 500);
+            // Set initial focus
+            elements.userInput.focus();
+            
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Ctrl/Cmd + Enter to send
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    app.handleSendMessage();
+                }
+                
+                // Ctrl/Cmd + / for help
+                if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+                    e.preventDefault();
+                    app.sendHelpCommand();
+                }
+            });
         });
+
+        // Service worker registration for offline capability
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {
+                console.log('Service worker registration failed');
+            });
+        }
     </script>
-<footer class="disclaimer">
-  By using <b>NeuroDX</b> you acknowledge that this tool is designed for educational purposes and <b>cannot replace formal medical training or professional certification</b>. Always adhere to appropriate medical protocol.
-</footer>
 </body>
 </html>
